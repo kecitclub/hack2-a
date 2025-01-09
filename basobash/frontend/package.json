@@ -9,6 +9,7 @@
 		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
 	},
 	"dependencies": {
+		"@geoapify/geocoder-autocomplete": "^2.1.0",
 		"@nextui-org/button": "2.2.8",
 		"@nextui-org/code": "2.2.5",
 		"@nextui-org/input": "2.4.7",
@@ -22,16 +23,21 @@
 		"@nextui-org/theme": "2.4.4",
 		"@react-aria/ssr": "3.9.7",
 		"@react-aria/visually-hidden": "3.8.18",
+		"axios": "^1.7.9",
 		"bcryptjs": "^2.4.3",
 		"clsx": "2.1.1",
+		"dotenv": "^16.4.7",
 		"framer-motion": "11.13.1",
 		"intl-messageformat": "^10.5.0",
+		"leaflet": "^1.9.4",
+		"leaflet-control-geocoder": "^3.1.0",
 		"mongoose": "^8.9.3",
 		"next": "15.0.4",
 		"next-auth": "^4.24.11",
 		"next-themes": "^0.4.4",
 		"react": "18.3.1",
-		"react-dom": "18.3.1"
+		"react-dom": "18.3.1",
+		"react-leaflet": "^5.0.0-rc.2"
 	},
 	"devDependencies": {
 		"@next/eslint-plugin-next": "15.0.4",
