@@ -38,37 +38,13 @@ const Geocoder = ({ currentPosition }) => {
       collapsed: false,
     }).addTo(map);
 
-    // Override markGeocode to sort results by distance
     control.markGeocode = function (result) {
       const latlng = result.center;
       map.setView(latlng, map.getZoom());
-      L.marker(latlng).addTo(map).bindPopup(result.name).openPopup();
-    };
-
-    const originalQuery = geocoder.geocode;
-    geocoder.geocode = function (query, cb, context) {
-      originalQuery.call(
-        this,
-        query,
-        (results) => {
-          if (currentPosition) {
-            // Sort results by distance from currentPosition
-            results.sort((a, b) => {
-              const distA = map.distance(
-                L.latLng(currentPosition),
-                L.latLng(a.center)
-              );
-              const distB = map.distance(
-                L.latLng(currentPosition),
-                L.latLng(b.center)
-              );
-              return distA - distB;
-            });
-          }
-          cb.call(context, results);
-        },
-        context
-      );
+      L.marker(latlng)
+        .addTo(map)
+        .bindPopup(result.name || "Location")
+        .openPopup();
     };
 
     return () => {
@@ -89,16 +65,30 @@ L.Icon.Default.mergeOptions({
 
 // Main Map Component
 const GeocodedMap = () => {
-  const [position, setPosition] = useState([51.505, -0.09]); // Default to London initially
+  const [position, setPosition] = useState([27.7103, 85.3222]); // Default to London initially
 
   useEffect(() => {
     const fetchPosition = async () => {
       const userPosition = await getCurrentLatLong();
+      console.log(userPosition);
       setPosition(userPosition);
     };
 
     fetchPosition();
   }, []);
+
+  // Pan map to user location when position is updated
+  const PanToLocation = () => {
+    const map = useMap();
+
+    useEffect(() => {
+      if (position) {
+        map.panTo(position);
+      }
+    }, [map, position]);
+
+    return null;
+  };
 
   return (
     <div style={{ position: "relative", height: "100vh" }}>
@@ -116,6 +106,7 @@ const GeocodedMap = () => {
           <Popup>Current Location</Popup>
         </Marker>
         <Geocoder currentPosition={position} />
+        <PanToLocation />
       </MapContainer>
     </div>
   );
