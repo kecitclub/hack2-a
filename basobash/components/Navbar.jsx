@@ -1,7 +1,7 @@
 const Navbar = () => {
   return (
     <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
-      <div className="text-lg font-bold">Rental Finder</div>
+      <div className="text-lg font-bold">Bisobash</div>
       <ul className="flex space-x-4">
         <li>
           <a href="#" className="hover:underline">
