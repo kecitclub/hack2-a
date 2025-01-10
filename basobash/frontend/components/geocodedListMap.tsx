@@ -10,6 +10,7 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import ListForm from "./listForm";
 
 const GEOAPIFY_API_KEY = "1f3eec48fa604cf7b262e4d4ba1d004c";
 
@@ -33,10 +34,10 @@ interface Feature {
 }
 
 const GeocodedListMap = () => {
-  const [marker, setMarker] = useState(null);
+  const [marker, setMarker] = useState<{ lat: number; lng: number } | null>(null); // Correct type for marker state
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Feature[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState<{ lat: number; lng: number } | null>(null); // Correct type for selectedLocation state
   const [showListForm, setShowListForm] = useState(false);
 
   const AddMarker = () => {
@@ -98,9 +99,6 @@ const GeocodedListMap = () => {
       alert("Please add a marker before saving.");
     }
   };
-
-
-
 
   return (
     <div className="h-[70vh] flex flex-col items-center justify-start">
