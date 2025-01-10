@@ -34,10 +34,10 @@ interface Feature {
 }
 
 const GeocodedListMap = () => {
-  const [marker, setMarker] = useState<{ lat: number; lng: number } | null>(null); // Correct type for marker state
+  const [marker, setMarker] = useState(null);
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Feature[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<{ lat: number; lng: number } | null>(null); // Correct type for selectedLocation state
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [showListForm, setShowListForm] = useState(false);
 
   const AddMarker = () => {
@@ -49,11 +49,10 @@ const GeocodedListMap = () => {
       },
     });
 
-    // Add effect to handle flying to selected location
     useEffect(() => {
       if (selectedLocation) {
         map.flyTo([selectedLocation.lat, selectedLocation.lng], 13, {
-          animate: true
+          animate: true,
         });
       }
     }, [map, selectedLocation]);
@@ -94,30 +93,30 @@ const GeocodedListMap = () => {
 
   const handleSaveToDB = () => {
     if (marker) {
-      setShowListForm(true);
+      setShowListForm((prev) => !prev);
     } else {
       alert("Please add a marker before saving.");
     }
   };
 
   return (
-    <div className="h-[70vh] flex flex-col items-center justify-start">
+    <div className="h-screen w-screen flex flex-col justify-center items-center">
       {/* Search input with autocomplete */}
-      <div className="flex justify-center w-full py-5 z-50">
-        <div className="relative w-full max-w-md mx-auto">
+      <div className="flex justify-center py-4 z-50">
+        <div className="relative w-full max-w-md">
           <input
             type="text"
             value={query}
             onChange={handleInputChange}
             placeholder="Search for a location..."
-            className="relative w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           {suggestions.length > 0 && (
             <ul className="absolute z-[60] text-black text-left bg-white w-full shadow-lg rounded-lg mt-1 max-h-60 overflow-y-auto">
               {suggestions.map((feature, index) => (
                 <button
                   key={index}
-                  className="w-full p-2 text-left hover:bg-gray-100 cursor-pointer z-20"
+                  className="w-full p-2 text-left hover:bg-gray-100 cursor-pointer"
                   onClick={() => handleSuggestionClick(feature)}
                   onKeyDown={(e) =>
                     e.key === "Enter" && handleSuggestionClick(feature)
@@ -131,9 +130,14 @@ const GeocodedListMap = () => {
           )}
         </div>
       </div>
-      <div className="flex h-full flex-row">
+
+      <div className="flex flex-row h-full w-full">
         {/* Map container */}
-        <div className={`w-${showListForm ? '[45vw]' : '[90vw]'} z-10 h-full`}>
+        <div
+          className={`flex-grow transition-all duration-300 ${
+            showListForm ? "w-2/3" : "w-full"
+          }`}
+        >
           <MapContainer
             center={[27.7172, 85.324]}
             zoom={13}
@@ -154,21 +158,20 @@ const GeocodedListMap = () => {
           </MapContainer>
         </div>
 
-        {/* ListForm - Only show when showListForm is true */}
+        {/* ListForm */}
         {showListForm && (
-          <div className="w-[45vw] z-10 h-full">
+          <div className="w-1/3 h-full p-4 bg-gray-100 border-l border-gray-300 overflow-y-auto">
             <ListForm marker={marker} />
           </div>
         )}
       </div>
-
       {/* Save button */}
       <div className="absolute bottom-5 left-5 z-50">
         <button
           onClick={handleSaveToDB}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg"
         >
-          {showListForm ? 'Hide Form' : 'Add Location'}
+          {showListForm ? "Hide Form" : "Add Location"}
         </button>
       </div>
     </div>
