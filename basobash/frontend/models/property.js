@@ -5,6 +5,16 @@ const propertySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  roomSharing: {
+type: Boolean,
+required: true
+  },
+  roommates: {
+type: Number,
+required: false,
+default: 0,
+
+  },
   description: {
     type: String,
     required: true,

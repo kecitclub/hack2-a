@@ -24,13 +24,12 @@ const ListForm = ({ marker }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    // Validation: Check if required fields are populated
+
     if (
       !formData.title ||
       !formData.price ||
       !formData.bedrooms ||
-      !formData.bathrooms ||
-      !formData.images.length
+      !formData.bathrooms
     ) {
       alert("Please fill out all required fields.");
       return;
@@ -70,7 +69,6 @@ const ListForm = ({ marker }) => {
     <div>
       <Form className="w-full max-w-xs" onSubmit={handleSubmit}>
         <Input
-          isRequired
           errorMessage="Please add a valid image"
           label="Images"
           labelPlacement="outside"
@@ -80,7 +78,6 @@ const ListForm = ({ marker }) => {
           onChange={handleChange}
         />
         <Input
-          isRequired
           errorMessage="Please enter a valid phone number"
           label="Phone"
           labelPlacement="outside"
@@ -90,7 +87,6 @@ const ListForm = ({ marker }) => {
           onChange={handleChange}
         />
         <Input
-          isRequired
           errorMessage="Please enter a valid rent fee"
           label="Rent Fee"
           labelPlacement="outside"
@@ -100,7 +96,6 @@ const ListForm = ({ marker }) => {
           onChange={handleChange}
         />
         <Input
-          isRequired
           errorMessage="Please enter valid number of bedroom"
           label="No. of bedroom"
           labelPlacement="outside"
@@ -110,7 +105,6 @@ const ListForm = ({ marker }) => {
           onChange={handleChange}
         />
         <Input
-          isRequired
           errorMessage="Please enter valid number of bathroom"
           label="No. of bathroom"
           labelPlacement="outside"
