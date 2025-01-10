@@ -10,7 +10,6 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import ListForm from "./listForm";
 
 const GEOAPIFY_API_KEY = "1f3eec48fa604cf7b262e4d4ba1d004c";
 
@@ -167,7 +166,7 @@ const GeocodedListMap = () => {
 
       {/* Save button */}
       <div className="absolute bottom-5 left-5 z-50">
-        <button 
+        <button
           onClick={handleSaveToDB}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg"
         >
