@@ -34,42 +34,46 @@ export const Navbar = () => {
 
   // Define the links to be displayed in the navbar based on the authentication state
   const navItems = isAuthenticated
-    ? [    {
-      label: "About Us",
-      href: "/aboutus"
-    },
-    {
-      label: "FAQ",
-      href: "/faq"
-    },
-
-    {
-      label: "Contact",
-      href: "/contact"
-    }, { label: <CgProfile size={25}/>, href: "/dashboard" }]
-    : [
-        { label: "Login", href: "/login" },
-        { label: "Register", href: "/register" },    {
+    ? [
+        {
           label: "About Us",
-          href: "/aboutus"
+          href: "/aboutus",
         },
         {
           label: "FAQ",
-          href: "/faq"
+          href: "/faq",
+        },
+
+        {
+          label: "Contact",
+          href: "/contact",
+        },
+        { label: <CgProfile size={25} />, href: "/dashboard" },
+      ]
+    : [
+        { label: "Login", href: "/login" },
+        { label: "Register", href: "/register" },
+        {
+          label: "About Us",
+          href: "/aboutus",
+        },
+        {
+          label: "FAQ",
+          href: "/faq",
         },
         {
           label: "Contact",
-          href: "/contact"
-        }
+          href: "/contact",
+        },
       ];
 
   return (
-    <NextUINavbar maxWidth="xl" position="sticky" className="fixed z-50 ">
+    <NextUINavbar maxWidth="xl" className="fixed z-50 bg-transparent w-screen">
       <NavbarContent className="basis-1/5 sm:basis-full flex justify-between ">
-        <NavbarBrand as="li" className="gap-3 max-w-fit">
+        <NavbarBrand as="li" className="gap-3 ">
           <NextLink className="flex justify-center items-end gap-1" href="/">
             <Image src={logoColored} alt="Logo" width={20} />
-            <span className="text-[#f63e3e] -ml-[2px] -mb-[4.25px] font-semibold">
+            <span className="text-[#f63e3e] -ml-[2px] -mb-[5.5px] text-xl font-bold">
               asobas
             </span>
           </NextLink>
@@ -104,8 +108,8 @@ export const Navbar = () => {
         <NavbarMenuToggle />
       </NavbarContent>
 
-      <NavbarMenu>
-        <div className="mx-4 mt-2 flex flex-col gap-2">
+      <NavbarMenu className="z-50">
+        <div className="mx-4 mt-2 flex flex-col gap-2 ">
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link

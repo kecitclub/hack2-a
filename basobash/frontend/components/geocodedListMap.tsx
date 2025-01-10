@@ -116,11 +116,9 @@ const GeocodedListMap = () => {
   const handleFormSubmit = async (formData: any) => {
     if (!marker) return;
 
-    // Combine form data with location data
     const propertyData = {
       ...formData,
       location: `${marker.lat},${marker.lng}`, // Store coordinates as string
-      // Add any other necessary fields
     };
 
     try {
@@ -136,10 +134,8 @@ const GeocodedListMap = () => {
         throw new Error("Failed to save property");
       }
 
-      // Handle successful submission
       setShowListForm(false);
       setMarker(null);
-      // Optionally add success message or redirect
     } catch (error) {
       console.error("Error saving property:", error);
       alert("Failed to save property. Please try again.");
@@ -148,11 +144,8 @@ const GeocodedListMap = () => {
 
   return (
     <div className="h-[500px] w-full flex flex-col justify-center items-center relative">
-      {/* Search input with autocomplete - improved spacing and z-index */}
-
       <div className="flex flex-row gap-10 h-full w-full">
         <div className="flex flex-row h-full w-full">
-          {/* Map container - added border and shadow */}
           <div
             className={`flex-grow transition-all duration-300 rounded-lg overflow-hidden shadow-lg ${
               showListForm ? "w-1/2" : "w-full"
@@ -219,7 +212,7 @@ const GeocodedListMap = () => {
       <div className="absolute bottom-5 left-5 z-[1000]">
         <button
           onClick={() => setShowListForm((prev) => !prev)}
-          className="bg-[#f63e3e] hover:bg-[#fc4949] shadow-md text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-colors duration-200"
+          className="bg-[#f63e3e] hover:bg-[#fc4949] rounded-full text-white font-bold py-3 px-6 shadow-lg transition-colors duration-200"
         >
           {showListForm ? "Hide Form" : "Add Location"}
         </button>
