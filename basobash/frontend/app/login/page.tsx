@@ -10,26 +10,44 @@ const Login = () => {
     const router = useRouter();
 
     const handleLogin = async () => {
+        setError('');
+
+        // Validate phone and password
         if (!phone || !password) {
             setError('Phone number and password are required');
             return;
         }
 
-        const response = await fetch('http://localhost:3000/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone, password }),
-        });
+        try {
+            const response = await fetch('http://localhost:3000/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone, password }),
+            });
 
-        const data = await response.json();
+            // Log the raw response text to check its content
+            const rawText = await response.text();  // Read the raw response as text
+            console.log('Raw response:', rawText);   // Log it to the console
 
-        if (response.ok && data.token) {
-            alert('Login successful');
-         
-            localStorage.setItem('token', data.token);
-            router.push('/dashboard'); 
-        } else {
-            setError(data.error || 'Invalid phone number or password');
+            let data;
+            try {
+                data = JSON.parse(rawText);  // Attempt to parse it as JSON
+            } catch (e) {
+                console.error('Error parsing response as JSON:', e);
+                setError('Failed to parse server response');
+                return;
+            }
+
+            if (response.ok && data.token) {
+                alert('Login successful');
+                localStorage.setItem('token', data.token);
+                router.push('/dashboard');
+            } else {
+                setError(data.error || 'Invalid phone number or password');
+            }
+        } catch (error) {
+            console.error('Error during login:', error);
+            setError('An error occurred during login');
         }
     };
 
