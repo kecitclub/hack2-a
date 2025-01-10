@@ -33,11 +33,18 @@ interface Feature {
   properties: { formatted: string };
 }
 
+interface MarkerType {
+  lat: number;
+  lng: number;
+}
+
 const GeocodedListMap = () => {
-  const [marker, setMarker] = useState<{ lat: number; lng: number } | null>(null); // Correct type for marker state
+  const [marker, setMarker] = useState<MarkerType | null>(null);
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Feature[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<{ lat: number; lng: number } | null>(null); // Correct type for selectedLocation state
+  const [selectedLocation, setSelectedLocation] = useState<MarkerType | null>(
+    null
+  );
   const [showListForm, setShowListForm] = useState(false);
 
   const AddMarker = () => {
@@ -49,11 +56,25 @@ const GeocodedListMap = () => {
       },
     });
 
-    // Add effect to handle flying to selected location
+    useEffect(() => {
+      // Get user's location on mount
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          map.flyTo([latitude, longitude], 13, {
+            animate: true,
+          });
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+        }
+      );
+    }, [map]); // Only run once when map is available
+
     useEffect(() => {
       if (selectedLocation) {
         map.flyTo([selectedLocation.lat, selectedLocation.lng], 13, {
-          animate: true
+          animate: true,
         });
       }
     }, [map, selectedLocation]);
@@ -94,81 +115,88 @@ const GeocodedListMap = () => {
 
   const handleSaveToDB = () => {
     if (marker) {
-      setShowListForm(true);
+      setShowListForm((prev) => !prev);
     } else {
       alert("Please add a marker before saving.");
     }
   };
 
   return (
-    <div className="h-[70vh] flex flex-col items-center justify-start">
-      {/* Search input with autocomplete */}
-      <div className="flex justify-center w-full py-5 z-50">
-        <div className="relative w-full max-w-md mx-auto">
-          <input
-            type="text"
-            value={query}
-            onChange={handleInputChange}
-            placeholder="Search for a location..."
-            className="relative w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {suggestions.length > 0 && (
-            <ul className="absolute z-[60] text-black text-left bg-white w-full shadow-lg rounded-lg mt-1 max-h-60 overflow-y-auto">
-              {suggestions.map((feature, index) => (
-                <button
-                  key={index}
-                  className="w-full p-2 text-left hover:bg-gray-100 cursor-pointer z-20"
-                  onClick={() => handleSuggestionClick(feature)}
-                  onKeyDown={(e) =>
-                    e.key === "Enter" && handleSuggestionClick(feature)
-                  }
-                  tabIndex={0}
-                >
-                  {feature.properties.formatted}
-                </button>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
-      <div className="flex h-full flex-row">
-        {/* Map container */}
-        <div className={`w-${showListForm ? '[45vw]' : '[90vw]'} z-10 h-full`}>
-          <MapContainer
-            center={[27.7172, 85.324]}
-            zoom={13}
-            style={{ height: "100%", width: "100%" }}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <AddMarker />
-            {marker && (
-              <Marker position={[marker.lat, marker.lng]}>
-                <Popup>
-                  Marker at {marker.lat}, {marker.lng}
-                </Popup>
-              </Marker>
-            )}
-          </MapContainer>
-        </div>
+    <div className="h-[500px] w-full flex flex-col justify-center items-center relative">
+      {/* Search input with autocomplete - improved spacing and z-index */}
 
-        {/* ListForm - Only show when showListForm is true */}
+      <div className="flex flex-row gap-10 h-full w-full">
+        <div className="flex flex-row h-full w-full">
+          {/* Map container - added border and shadow */}
+          <div
+            className={`flex-grow transition-all duration-300 rounded-lg overflow-hidden shadow-lg ${
+              showListForm ? "w-1/2" : "w-full"
+            }`}
+          >
+            <MapContainer
+              center={[27.7172, 85.324]}
+              zoom={13}
+              style={{ height: "100%", width: "100%" }}
+              className="z-10"
+            >
+              <div className="absolute top-4 left-0 right-0 px-4 z-[1000]">
+                <div className="relative w-full max-w-sm mx-auto">
+                  <input
+                    type="text"
+                    value={query}
+                    onChange={handleInputChange}
+                    placeholder="Search for a location..."
+                    className="w-full p-3 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                  />
+                  {suggestions.length > 0 && (
+                    <ul className="absolute z-[1001] w-full bg-white shadow-xl rounded-lg mt-1 max-h-60 overflow-y-auto border border-gray-200">
+                      {suggestions.map((feature, index) => (
+                        <button
+                          key={index}
+                          className="w-full p-3 text-left hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0"
+                          onClick={() => handleSuggestionClick(feature)}
+                          onKeyDown={(e) =>
+                            e.key === "Enter" && handleSuggestionClick(feature)
+                          }
+                          tabIndex={0}
+                        >
+                          {feature.properties.formatted}
+                        </button>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <AddMarker />
+              {marker && (
+                <Marker position={[marker.lat, marker.lng]}>
+                  <Popup>
+                    Marker at {marker.lat}, {marker.lng}
+                  </Popup>
+                </Marker>
+              )}
+            </MapContainer>
+          </div>
+
+          {/* ListForm - improved border styling */}
+        </div>
         {showListForm && (
-          <div className="w-[45vw] z-10 h-full">
+          <div className="w-1/2 h-full p-4 bg-white border-l border-gray-200 overflow-y-auto shadow-inner">
             <ListForm marker={marker} />
           </div>
         )}
       </div>
-
-      {/* Save button */}
-      <div className="absolute bottom-5 left-5 z-50">
+      {/* Save button - improved positioning and styling */}
+      <div className="absolute bottom-5 left-5 z-[1000]">
         <button
           onClick={handleSaveToDB}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-colors duration-200"
         >
-          {showListForm ? 'Hide Form' : 'Add Location'}
+          {showListForm ? "Hide Form" : "Add Location"}
         </button>
       </div>
     </div>
