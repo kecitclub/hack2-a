@@ -42,51 +42,38 @@ const ListForm = ({ marker, onSubmit }: ListFormProps) => {
   return (
     <div>
       <Form
-        className="w-full p-5"
+        className="w-full p-5 text-left gap-6 flex-col justify-start items-start"
         validationBehavior="native"
         onSubmit={handleSubmit}
       >
-        <RadioGroup
-          label="Searching for a Roommate?"
-          className="text-md text-black accent-[#f63e3e]"
-        >
-          <Radio className="accent-[#f63e3e]" value="yes">
-            Yes
-          </Radio>
-          <Radio className="accent-[#f63e3e]" value="no">
-            No
-          </Radio>
-        </RadioGroup>
         <Input
           isRequired
-          errorMessage="Please add a valid image"
-          label="Images"
+          errorMessage="Please enter a title"
+          label="Title"
           labelPlacement="outside"
-          name="image"
-          multiple
-          placeholder="Image"
-          type="file"
+          name="title"
+          placeholder="Enter property title"
+          type="text"
         />
-        <Input
-          isRequired
-          errorMessage="Please enter a valid phone number"
-          label="Phone"
-          labelPlacement="outside"
-          name="phone"
-          placeholder="Enter your phone"
-          type="number"
-          className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-        />
-        <Input
-          isRequired
-          errorMessage="Please enter a valid rent fee"
-          label="Rent Fee"
-          labelPlacement="outside"
-          name="Rent Fee"
-          placeholder="Enter your rent fee"
-          type="number"
-          className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-        />
+        <div>
+          <label htmlFor="roommateBool" className="text-sm ">
+            Searching for a Roommate?
+          </label>
+          <RadioGroup
+            color="danger"
+            className="text-md text-black accent-[#f63e3e] "
+            orientation="horizontal"
+            defaultValue="no"
+            name="roommateBool"
+          >
+            <Radio className="accent-[#f63e3e]" value="yes">
+              Yes
+            </Radio>
+            <Radio className="accent-[#f63e3e]" value="no">
+              No
+            </Radio>
+          </RadioGroup>
+        </div>
 
         <Input
           isRequired
@@ -118,17 +105,36 @@ const ListForm = ({ marker, onSubmit }: ListFormProps) => {
           type="number"
           className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
-
         <Input
           isRequired
-          errorMessage="Please enter a title"
-          label="Title"
+          errorMessage="Please add a valid image"
+          label="Images"
           labelPlacement="outside"
-          name="title"
-          placeholder="Enter property title"
-          type="text"
+          name="image"
+          multiple
+          placeholder="Image"
+          type="file"
         />
-
+        <Input
+          isRequired
+          errorMessage="Please enter a valid phone number"
+          label="Phone"
+          labelPlacement="outside"
+          name="phone"
+          placeholder="Enter your phone"
+          type="number"
+          className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        />
+        <Input
+          isRequired
+          errorMessage="Please enter a valid rent fee"
+          label="Rent Fee"
+          labelPlacement="outside"
+          name="rentFee"
+          placeholder="Enter your rent fee"
+          type="number"
+          className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        />
         <Textarea
           errorMessage="Please enter a description"
           label="Description"

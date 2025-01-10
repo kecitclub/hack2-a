@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import connectDB from "@/lib/mongodb";
 import dbConnect from "@/lib/mongodb";
 import Property from "@/models/property";
 
