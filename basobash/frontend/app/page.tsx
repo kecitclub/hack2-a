@@ -61,7 +61,7 @@ const Home = () => {
               width={50}
               className="md:w-[50px] w-[30px]"
             />
-            <span className="text-3xl md:text-5xl text-[#f63e3e] font-semibold">
+            <span className="text-3xl md:text-5xl text-[#f63e3f] font-semibold">
               asobas
             </span>
           </div>
@@ -75,7 +75,7 @@ const Home = () => {
                 radius: "full",
                 variant: "shadow",
                 size: "md",
-              })} bg-[#f63e3e] text-white shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] font-semibold`}
+              })} bg-[#f63e3f] text-white font-semibold`}
               onClick={() => handleButtonClick(siteConfig.links.find)}
             >
               Find
@@ -85,7 +85,7 @@ const Home = () => {
                 radius: "full",
                 variant: "bordered",
                 size: "md",
-              })} border-[#f63e3e] text-[#f63e3e] font-semibold`}
+              })} border-[#f63e3f] text-[#f63e3f] font-semibold`}
               onClick={() => handleButtonClick(siteConfig.links.list)}
             >
               List
@@ -101,12 +101,11 @@ const Home = () => {
         />
       </div>
       <Image
-        className="absolute -bottom-[100px] scale-110 w-screen select-none"
+        className="absolute -bottom-[100px] scale-110 w-screen  select-none"
         src={waves}
         alt="Decorative waves"
-        width={3840}
+        width={1920}
         height={100}
-        style={{ objectFit: "cover", width: "100vw", height: "auto" }}
       />
     </section>
   );
