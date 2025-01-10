@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Link } from "@nextui-org/link";
 import { button as buttonStyles } from "@nextui-org/theme";
 import Image from "next/image";
 
@@ -12,49 +11,44 @@ import waves from "@/public/assets/images/design/wave.svg";
 import { siteConfig } from "@/config/site";
 
 const Home = () => {
-  const [isClient, setIsClient] = useState(false); // Client-side flag
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    setIsClient(true); // Set the flag to true after component mounts
+    setIsClient(true); // Ensure component renders only after mounting
   }, []);
 
-  const checkAuthToken = (link: string) => {
-    const token = localStorage.getItem("token"); // Or get token from cookies
+  const checkAuthToken = async (link: string) => {
+    const token = localStorage.getItem("token"); // Get token (or use cookies if applicable)
     if (!token) {
-      // If no token, redirect to login page
-      router.push("/login");
-    } else {
-      try {
-        // Check if token is valid by sending a request to your backend to verify the token
-        fetch("/api/auth/verify-token", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-          .then((response) => {
-            if (response.ok) {
-              // If the token is valid, redirect to the link
-              router.push(link);
-            } else {
-              router.push("/login"); // Redirect if the token is invalid or expired
-            }
-          })
-          .catch(() => {
-            router.push("/login"); // Redirect in case of error (e.g., token expired)
-          });
-      } catch (error) {
-        router.push("/login");
+      router.push("/login"); // Redirect to login if no token is found
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/auth/verify-token", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        router.push(link); // Redirect if token is valid
+      } else {
+        router.push("/login"); // Redirect if token is invalid or expired
       }
+    } catch (error) {
+      console.error("Token verification failed:", error);
+      router.push("/login"); // Handle errors gracefully by redirecting
     }
   };
 
   const handleButtonClick = (link: string) => {
-    checkAuthToken(link); // Check the token before navigating
+    checkAuthToken(link); // Check authentication before navigating
   };
 
-  if (!isClient) return null; // Avoid rendering the component until after mounting
+  if (!isClient) return null; // Prevent rendering during SSR
 
   return (
     <section className="relative h-screen flex items-center justify-center  md:py-10 overflow-hidden">
@@ -76,26 +70,26 @@ const Home = () => {
             Find your place. Find your people
           </div>
           <div className="flex gap-2 z-10 mt-5">
-            <Link
+            <button
               className={`${buttonStyles({
                 radius: "full",
                 variant: "shadow",
                 size: "md",
               })} bg-[#f63e3e] text-white shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] font-semibold`}
-              href={siteConfig.links.find}
+              onClick={() => handleButtonClick(siteConfig.links.find)}
             >
               Find
-            </Link>
-            <Link
+            </button>
+            <button
               className={`${buttonStyles({
                 radius: "full",
                 variant: "bordered",
                 size: "md",
-              })} border-[#f63e3e] text-[#f63e3e]  font-semibold`}
-              href={siteConfig.links.list}
+              })} border-[#f63e3e] text-[#f63e3e] font-semibold`}
+              onClick={() => handleButtonClick(siteConfig.links.list)}
             >
               List
-            </Link>
+            </button>
           </div>
         </div>
 

@@ -48,12 +48,11 @@ const Dashboard = () => {
         <div>
             <br></br>
           <h3>Profile Details:</h3>
-          <p><Image src="/profile.jpg" alt="profile"></Image></p>
+          <p><Image src="/profile.jpg" alt="profile" width={300} height={300}></Image></p>
           <p><strong>Name:</strong> {userData.name}</p>
           <p><strong>Phone:</strong> {userData.phone}</p>
           <p><strong>Sex:</strong> {userData.sex}</p>
           <p><strong>Description:</strong> {userData.description}</p>
-          {/* Add more profile information as needed */}
         </div>
       )}
     </div>

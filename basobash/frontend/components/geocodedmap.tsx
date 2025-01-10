@@ -6,11 +6,11 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 // Fix Leaflet default icon paths
-L.Icon.Default.imagePath = "leaflet/dist/images/";
+L.Icon.Default.imagePath = "/";
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "leaflet/dist/images/marker-icon-2x.png",
-  iconUrl: "leaflet/dist/images/marker-icon.png",
-  shadowUrl: "leaflet/dist/images/marker-shadow.png",
+  iconRetinaUrl: "marker-icon-2x.png",
+  iconUrl: "marker-icon.png",
+  shadowUrl: "marker-shadow.png",
 });
 
 const GEOAPIFY_API_KEY = "1f3eec48fa604cf7b262e4d4ba1d004c";
