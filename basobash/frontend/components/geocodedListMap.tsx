@@ -57,6 +57,21 @@ const GeocodedListMap = () => {
     });
 
     useEffect(() => {
+      // Get user's location on mount
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          map.flyTo([latitude, longitude], 13, {
+            animate: true,
+          });
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+        }
+      );
+    }, [map]); // Only run once when map is available
+
+    useEffect(() => {
       if (selectedLocation) {
         map.flyTo([selectedLocation.lat, selectedLocation.lng], 13, {
           animate: true,

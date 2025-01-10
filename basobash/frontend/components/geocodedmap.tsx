@@ -118,43 +118,52 @@ const PanAndMarker = ({ location }: { location: Location }) => {
   ) : null;
 };
 
+// Add this new component for getting user location
+const InitialLocationSetter = () => {
+  const map = useMap();
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        map.flyTo([latitude, longitude], 13);
+      },
+      (error) => {
+        console.error("Error getting user location:", error);
+      }
+    );
+  }, [map]);
+
+  return null;
+};
+
 const GeocodedMap = () => {
-  const [mapVisible, setMapVisible] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
-    null
-  );
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
 
   const handleLocationSelected = (location: Location) => {
     setSelectedLocation(location);
-    setMapVisible(true);
   };
 
   return (
     <>
       <div className="flex justify-center w-full py-5">
-        <SearchBarWithAutocomplete
-          onLocationSelected={handleLocationSelected}
-        />
+        <SearchBarWithAutocomplete onLocationSelected={handleLocationSelected} />
       </div>
       <div className="h-[500px] flex flex-col items-center justify-start">
-        {/* Search Bar */}
-
-        {/* Map */}
-        {mapVisible && selectedLocation && (
-          <div className="w-full z-10 h-full">
-            <MapContainer
-              center={[selectedLocation.lat, selectedLocation.lon]}
-              zoom={16}
-              style={{ height: "100%", width: "100%" }}
-            >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              />
-              <PanAndMarker location={selectedLocation} />
-            </MapContainer>
-          </div>
-        )}
+        <div className="w-full z-10 h-full">
+          <MapContainer
+            center={[27.71, 85.32]} // Default center, will be updated by InitialLocationSetter
+            zoom={13}
+            style={{ height: "100%", width: "100%" }}
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <InitialLocationSetter />
+            {selectedLocation && <PanAndMarker location={selectedLocation} />}
+          </MapContainer>
+        </div>
       </div>
     </>
   );
