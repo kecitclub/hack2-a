@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import dbConnect from '../../../lib/mongodb';
 import User from '../../../models/User';
 
-const SECRET_KEY = process.env.SECRET_KEY || '439E72DA84'; // You should store this in env variables for production
+const SECRET_KEY = process.env.SECRET_KEY || '439E72DA84'; 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'POST') {

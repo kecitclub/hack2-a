@@ -1,3 +1,5 @@
+
+
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
@@ -12,6 +14,10 @@ export const siteConfig = {
       label: "Register",
       href: "/register",
     },
+    {
+      label: "Profile",
+      href: "/dashboard"
+    }
   ],
   navMenuItems: [
     {

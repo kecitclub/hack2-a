@@ -12,14 +12,32 @@ import { Link } from "@nextui-org/link";
 import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
-
+import { useEffect, useState } from "react"; // import useState, useEffect for token management
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 
-import logo from "@/public/assets/images/logo.svg";
 import logoColored from "@/public/assets/images/logo-colored.svg";
 
 export const Navbar = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // Or use cookies if you prefer
+    if (token) {
+      setIsAuthenticated(true); // Token exists, user is authenticated
+    } else {
+      setIsAuthenticated(false); // No token, user is not authenticated
+    }
+  }, []); // Empty dependency array means it runs once when the component mounts
+
+  // Define the links to be displayed in the navbar based on the authentication state
+  const navItems = isAuthenticated
+    ? [{ label: "Profile", href: "/dashboard" }]
+    : [
+        { label: "Login", href: "/login" },
+        { label: "Register", href: "/register" },
+      ];
+
   return (
     <NextUINavbar
       maxWidth="xl"
@@ -43,7 +61,7 @@ export const Navbar = () => {
       >
         <NavbarItem className="hidden sm:flex gap-2">
           <ul className="hidden lg:flex gap-4 justify-start ">
-            {siteConfig.navItems.map((item) => (
+            {navItems.map((item) => (
               <NavbarItem key={item.href}>
                 <NextLink
                   className={clsx(

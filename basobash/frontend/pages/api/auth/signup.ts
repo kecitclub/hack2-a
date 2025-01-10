@@ -6,7 +6,7 @@ import User from '../../../models/User';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'POST') return res.status(405).end();
 
-    const { phone, password } = req.body;
+    const { phone, password, description, sex } = req.body;
 
     try {
         await dbConnect();
@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await User.create({phone: phone, password: hashedPassword})
+        const user = await User.create({phone: phone, password: hashedPassword, description: description, sex: sex})
 
         res.status(201).json({ message: 'User created successfully', user: user });
     } catch (error) {
