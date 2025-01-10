@@ -138,7 +138,9 @@ const InitialLocationSetter = () => {
 };
 
 const GeocodedMap = () => {
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    null
+  );
 
   const handleLocationSelected = (location: Location) => {
     setSelectedLocation(location);
@@ -147,7 +149,9 @@ const GeocodedMap = () => {
   return (
     <>
       <div className="flex justify-center w-full py-5">
-        <SearchBarWithAutocomplete onLocationSelected={handleLocationSelected} />
+        <SearchBarWithAutocomplete
+          onLocationSelected={handleLocationSelected}
+        />
       </div>
       <div className="h-[500px] flex flex-col items-center justify-start">
         <div className="w-full z-10 h-full">

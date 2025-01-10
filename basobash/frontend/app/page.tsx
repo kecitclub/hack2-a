@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { button as buttonStyles } from "@nextui-org/theme";
 import Image from "next/image";
 
 import logoColored from "@/public/assets/images/logo-colored.svg";
@@ -53,7 +52,7 @@ const Home = () => {
   return (
     <section className="relative h-screen flex items-center justify-center  md:py-10 overflow-hidden">
       <div className="flex flex-wrap gap-[120px] justify-center">
-        <div className="flex flex-col max-w-xl text-center justify-center items-center z-10">
+        <div className="flex flex-col  text-center justify-center items-center z-10">
           <div className="flex gap-1 items-end">
             <Image
               src={logoColored}
@@ -71,21 +70,13 @@ const Home = () => {
           </div>
           <div className="flex gap-2 z-10 mt-5">
             <button
-              className={`${buttonStyles({
-                radius: "full",
-                variant: "shadow",
-                size: "md",
-              })} bg-[#f63e3f] text-white font-semibold`}
+              className={`px-6 py-2 rounded-full bg-[#f63e3f] text-white font-semibold`}
               onClick={() => handleButtonClick(siteConfig.links.find)}
             >
               Find
             </button>
             <button
-              className={`${buttonStyles({
-                radius: "full",
-                variant: "bordered",
-                size: "md",
-              })} border-[#f63e3f] text-[#f63e3f] font-semibold`}
+              className={`px-6 py-2 rounded-full border-2 border-[#f63e3f] text-black font-semibold`}
               onClick={() => handleButtonClick(siteConfig.links.list)}
             >
               List
@@ -105,7 +96,6 @@ const Home = () => {
         src={waves}
         alt="Decorative waves"
         width={1920}
-        height={100}
       />
     </section>
   );

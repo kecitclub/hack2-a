@@ -4,7 +4,7 @@ import GeocodedMap from "@/components/geocodedmap";
 
 export default function page() {
   return (
-    <div className="w-[80vw] h-[50vh]">
+    <div className="min-w-[80%] min-h-[50vh]">
       <h1 className={`text-3xl font-semibold`}>Find</h1>
       <div className="p-5">
         <GeocodedMap />

@@ -38,7 +38,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <div className="relative flex flex-col h-screen">
+        <div className="relative flex flex-col justify-start items-center h-screen">
           <Navbar />
           <main className="container  flex-grow">{children}</main>
         </div>

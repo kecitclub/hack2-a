@@ -5,6 +5,15 @@ const propertySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  roomSharing: {
+    type: Boolean,
+    required: true,
+  },
+  roommates: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
   description: {
     type: String,
     required: true,
@@ -16,9 +25,6 @@ const propertySchema = new mongoose.Schema({
   location: {
     type: String,
     required: true,
-  },
-  hall: {
-    type: Number,
   },
   bedrooms: {
     type: Number,
@@ -35,7 +41,7 @@ const propertySchema = new mongoose.Schema({
   sharedBy: {
     type: [{ type: mongoose.Schema.Types.ObjectId }],
     required: false,
-    default: 0,
+    default: [],
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
