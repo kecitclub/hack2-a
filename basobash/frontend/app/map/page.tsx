@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 
-const GeocodedMap = dynamic(() => import("../../components/geocdedmap"), {
+const GeocodedMap = dynamic(() => import("../../components/geocodedmap"), {
   ssr: false,
 });
 
