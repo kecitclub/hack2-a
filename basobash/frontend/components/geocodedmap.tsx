@@ -172,11 +172,10 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 }
 
 const GeocodedMap = () => {
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
-    null
-  );
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [properties, setProperties] = useState<Property[]>([]);
   const [radius, setRadius] = useState<number>(1);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -236,8 +235,8 @@ const GeocodedMap = () => {
         </div>
       </div>
 
-      <div className="h-[500px] flex flex-col items-center justify-start">
-        <div className="w-full z-10 h-full">
+      <div className="h-[500px] flex flex-row gap-10">
+        <div className={`z-10 h-full transition-all duration-300 ${selectedProperty ? 'w-1/2' : 'w-full'}`}>
           <MapContainer
             center={[27.71, 85.32]}
             zoom={13}
@@ -262,7 +261,10 @@ const GeocodedMap = () => {
             {filteredProperties.map((property) => (
               <Marker
                 key={property._id}
-                position={[property.latitude, property.longitude ]}
+                position={[property.latitude, property.longitude]}
+                eventHandlers={{
+                  click: () => setSelectedProperty(property)
+                }}
               >
                 <Popup>
                   <h3 className="font-bold">{property.title}</h3>
@@ -273,6 +275,25 @@ const GeocodedMap = () => {
             ))}
           </MapContainer>
         </div>
+
+        {selectedProperty && (
+          <div className="w-1/2 h-full p-4 bg-white border-2 shadow-md border-gray-200 rounded-md overflow-y-auto">
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-2xl font-bold">{selectedProperty.title}</h2>
+              <button 
+                onClick={() => setSelectedProperty(null)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ×
+              </button>
+            </div>
+            <div className="space-y-4">
+              <p className="text-lg">Location: {selectedProperty.location}</p>
+              <p className="text-xl font-semibold">Price: Rs{selectedProperty.price}</p>
+              {/* Add more property details here as needed */}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
