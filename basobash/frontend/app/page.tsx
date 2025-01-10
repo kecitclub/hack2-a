@@ -1,17 +1,60 @@
+"use client"
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Link } from "@nextui-org/link";
 import { button as buttonStyles } from "@nextui-org/theme";
-
 import { siteConfig } from "@/config/site";
-import { title, subtitle } from "@/components/primitives";
 
-export default function Home() {
+const Home = () => {
+  const [isClient, setIsClient] = useState(false); // Client-side flag
+  const router = useRouter();
+
+  useEffect(() => {
+    setIsClient(true); // Set the flag to true after component mounts
+  }, []);
+
+  const checkAuthToken = (link: string) => {
+    const token = localStorage.getItem("token"); // Or get token from cookies
+    if (!token) {
+      // If no token, redirect to login page
+      router.push("/login");
+    } else {
+      try {
+        // Check if token is valid by sending a request to your backend to verify the token
+        fetch("/api/auth/verify-token", {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        })
+          .then(response => {
+            if (response.ok) {
+              // If the token is valid, redirect to the link
+              router.push(link);
+            } else {
+              router.push("/login"); // Redirect if the token is invalid or expired
+            }
+          })
+          .catch(() => {
+            router.push("/login"); // Redirect in case of error (e.g., token expired)
+          });
+      } catch (error) {
+        router.push("/login");
+      }
+    }
+  };
+
+  const handleButtonClick = (link: string) => {
+    checkAuthToken(link); // Check the token before navigating
+  };
+
+  if (!isClient) return null; // Avoid rendering the component until after mounting
+
   return (
     <section className="min-h-screen flex flex-col items-center justify-center gap-4 md:py-10">
       <div className="inline-block max-w-xl text-center justify-center">
-        <span className={title({ color: "violet" })}>Basobas&nbsp;</span>
-        <br />
-        {/* <span className={title()}>Lorem ipsum dolor sit </span> */}
-        <div className={subtitle({ class: "mt-4" })}>
+        <span className="text-4xl text-violet-500">Basobas&nbsp;</span>
+        <div className="mt-4 text-lg text-gray-600">
           adipisicing elit. Accusamus ratione inventore dolore
         </div>
       </div>
@@ -24,7 +67,7 @@ export default function Home() {
             variant: "shadow",
             size: "md",
           })}
-          href={siteConfig.links.find}
+          onClick={() => handleButtonClick(siteConfig.links.find)}
         >
           Find
         </Link>
@@ -35,11 +78,13 @@ export default function Home() {
             variant: "shadow",
             size: "md",
           })}
-          href={siteConfig.links.list}
+          onClick={() => handleButtonClick(siteConfig.links.list)}
         >
           List
         </Link>
       </div>
     </section>
   );
-}
+};
+
+export default Home;
