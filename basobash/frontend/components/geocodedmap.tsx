@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, Circle } from "react-leaflet";
 import { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -36,6 +36,17 @@ interface Property {
   };
   location: string;
 }
+
+// Add this near the top of the file, after the default icon configuration
+const searchResultIcon = new L.Icon({
+  iconUrl: '/marker-icon-red.png',
+  iconRetinaUrl: '/marker-icon-red-2x.png',
+  shadowUrl: '/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 
 // Search Bar with Geoapify Autocomplete
 const SearchBarWithAutocomplete = ({
@@ -76,7 +87,7 @@ const SearchBarWithAutocomplete = ({
   };
 
   return (
-    <div className="relative w-full  mx-auto z-50">
+    <div className="relative w-full justify-center mx-auto z-50">
       <input
         type="text"
         value={query}
@@ -117,7 +128,7 @@ const PanAndMarker = ({ location }: { location: Location }) => {
   }, [map, location]);
 
   return location ? (
-    <Marker position={[location.lat, location.lon]}>
+    <Marker position={[location.lat, location.lon]} icon={searchResultIcon}>
       <Popup>
         {location.name}
         <span className="block mt-2">
@@ -148,11 +159,23 @@ const InitialLocationSetter = () => {
   return null;
 };
 
+function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
 const GeocodedMap = () => {
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
-    null
-  );
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [properties, setProperties] = useState<Property[]>([]);
+  const [radius, setRadius] = useState<number>(1);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -179,15 +202,41 @@ const GeocodedMap = () => {
     setSelectedLocation(location);
   };
 
+  const filteredProperties = properties.filter(property => {
+    if (!selectedLocation) return true;
+    
+    const distance = calculateDistance(
+      selectedLocation.lat,
+      selectedLocation.lon,
+      property.latitude,
+      property.longitude
+    );
+    return distance <= radius;
+  });
+
   return (
     <>
-      <div className="flex justify-center w-full py-5">
-        <SearchBarWithAutocomplete
-          onLocationSelected={handleLocationSelected}
-        />
+      <div className="flex flex-col items-center w-full py-5 gap-4">
+        <SearchBarWithAutocomplete onLocationSelected={handleLocationSelected} />
+        
+        <div className="w-full max-w-md flex flex-col items-center gap-2">
+          <label htmlFor="radius" className="text-sm font-medium">
+            Search Radius: {radius} km
+          </label>
+          <input
+            type="range"
+            id="radius"
+            min="1"
+            max="20"
+            value={radius}
+            onChange={(e) => setRadius(Number(e.target.value))}
+            className="w-full"
+          />
+        </div>
       </div>
-      <div className="h-[500px] flex flex-col items-center justify-start">
-        <div className="w-full z-10 h-full">
+
+      <div className="h-[500px] flex flex-row gap-10">
+        <div className={`z-10 h-full transition-all duration-300 ${selectedProperty ? 'w-1/2' : 'w-full'}`}>
           <MapContainer
             center={[27.71, 85.32]}
             zoom={13}
@@ -198,12 +247,24 @@ const GeocodedMap = () => {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
             <InitialLocationSetter />
-            {selectedLocation && <PanAndMarker location={selectedLocation} />}
+            {selectedLocation && (
+              <>
+                <PanAndMarker location={selectedLocation} />
+                <Circle
+                  center={[selectedLocation.lat, selectedLocation.lon]}
+                  radius={radius * 1000}
+                  pathOptions={{ color: 'blue', fillColor: 'blue', fillOpacity: 0.1 }}
+                />
+              </>
+            )}
             
-            {properties.map((property) => (
+            {filteredProperties.map((property) => (
               <Marker
                 key={property._id}
                 position={[property.latitude, property.longitude]}
+                eventHandlers={{
+                  click: () => setSelectedProperty(property)
+                }}
               >
                 <Popup>
                   <h3 className="font-bold">{property.title}</h3>
@@ -214,6 +275,25 @@ const GeocodedMap = () => {
             ))}
           </MapContainer>
         </div>
+
+        {selectedProperty && (
+          <div className="w-1/2 h-full p-4 bg-white border-2 shadow-md border-gray-200 rounded-md overflow-y-auto">
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-2xl font-bold">{selectedProperty.title}</h2>
+              <button 
+                onClick={() => setSelectedProperty(null)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ×
+              </button>
+            </div>
+            <div className="space-y-4">
+              <p className="text-lg">Location: {selectedProperty.location}</p>
+              <p className="text-xl font-semibold">Price: Rs{selectedProperty.price}</p>
+              {/* Add more property details here as needed */}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

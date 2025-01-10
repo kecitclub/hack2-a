@@ -145,65 +145,69 @@ const GeocodedListMap = () => {
   return (
     <div className="h-[500px] w-full flex flex-col justify-center items-center relative">
       <div className="flex flex-row gap-10 h-full w-full">
-        <div className="flex flex-row h-full w-full">
-          <div
-            className={`flex-grow transition-all duration-300 rounded-lg overflow-hidden shadow-lg ${
-              showListForm ? "w-1/2" : "w-full"
-            }`}
+        <div
+          className={`flex-grow transition-all duration-300 ${showListForm ? "w-1/2" : "w-full"}`}
+        >
+          <MapContainer
+            center={[27.7172, 85.324]}
+            zoom={16}
+            style={{ height: "100%", width: "100%" }}
+            className="z-10"
           >
-            <MapContainer
-              center={[27.7172, 85.324]}
-              zoom={16}
-              style={{ height: "100%", width: "100%" }}
-              className="z-10"
-            >
-              <div className="absolute top-4 left-0 right-0 px-4 z-[1000]">
-                <div className="relative w-full max-w-sm mx-auto">
-                  <input
-                    type="text"
-                    value={query}
-                    onChange={handleInputChange}
-                    placeholder="Search for a location..."
-                    className="w-full p-3 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-                  />
-                  {suggestions.length > 0 && (
-                    <ul className="absolute z-[1001] w-full bg-white shadow-xl rounded-lg mt-1 max-h-60 overflow-y-auto border border-gray-200">
-                      {suggestions.map((feature, index) => (
-                        <button
-                          key={index}
-                          className="w-full p-3 text-left hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0"
-                          onClick={() => handleSuggestionClick(feature)}
-                          onKeyDown={(e) =>
-                            e.key === "Enter" && handleSuggestionClick(feature)
-                          }
-                          tabIndex={0}
-                        >
-                          {feature.properties.formatted}
-                        </button>
-                      ))}
-                    </ul>
-                  )}
-                </div>
+            <div className="absolute top-4 left-0 right-0 px-4 z-[1000]">
+              <div className="relative w-full max-w-sm mx-auto">
+                <input
+                  type="text"
+                  value={query}
+                  onChange={handleInputChange}
+                  placeholder="Search for a location..."
+                  className="w-full p-3 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                />
+                {suggestions.length > 0 && (
+                  <ul className="absolute z-[1001] w-full bg-white shadow-xl rounded-lg mt-1 max-h-60 overflow-y-auto border border-gray-200">
+                    {suggestions.map((feature, index) => (
+                      <button
+                        key={index}
+                        className="w-full p-3 text-left hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0"
+                        onClick={() => handleSuggestionClick(feature)}
+                        onKeyDown={(e) =>
+                          e.key === "Enter" && handleSuggestionClick(feature)
+                        }
+                        tabIndex={0}
+                      >
+                        {feature.properties.formatted}
+                      </button>
+                    ))}
+                  </ul>
+                )}
               </div>
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              />
-              <AddMarker />
-              {marker && (
-                <Marker position={[marker.lat, marker.lng]}>
-                  <Popup>
-                    Marker at {marker.lat}, {marker.lng}
-                  </Popup>
-                </Marker>
-              )}
-            </MapContainer>
-          </div>
-
-          {/* ListForm - improved border styling */}
+            </div>
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <AddMarker />
+            {marker && (
+              <Marker position={[marker.lat, marker.lng]}>
+                <Popup>
+                  Marker at {marker.lat}, {marker.lng}
+                </Popup>
+              </Marker>
+            )}
+          </MapContainer>
         </div>
+
         {showListForm && (
           <div className="w-1/2 h-full p-4 bg-white border-2 shadow-md border-gray-200 rounded-md overflow-y-auto">
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-2xl font-bold">Add New Property</h2>
+              <button
+                onClick={() => setShowListForm(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ×
+              </button>
+            </div>
             <ListForm marker={marker} onSubmit={handleFormSubmit} />
           </div>
         )}

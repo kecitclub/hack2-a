@@ -61,6 +61,7 @@ const Dashboard = () => {
               <p><strong>Phone:</strong> {userData.phone}</p>
               <p><strong>Sex:</strong> {userData.sex}</p>
               <p><strong>Description:</strong> {userData.description}</p>
+              <p><strong>Listings:</strong>27.742712, 85.322508 - Gongabu, 44600</p>
             </div>
           </div>
         )}
