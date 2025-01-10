@@ -1,0 +1,4 @@
+{
+  "/api/auth/verify-token": "pages/api/auth/verify-token.js",
+  "/api/user/profile": "pages/api/user/profile.js"
+}

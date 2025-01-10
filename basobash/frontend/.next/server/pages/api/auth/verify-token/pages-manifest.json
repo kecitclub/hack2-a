@@ -1,0 +1,3 @@
+{
+  "/api/auth/verify-token": "pages/api/auth/verify-token.js"
+}

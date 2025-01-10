@@ -1,0 +1,26 @@
+{
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/[root of the server]__aeb69b._.css",
+      "static/chunks/node_modules_next_6d5712._.js",
+      "static/chunks/a480a_tailwind-merge_dist_lib_e98f55._.js",
+      "static/chunks/node_modules_@nextui-org_shared-utils_dist_32b6f9._.js",
+      "static/chunks/node_modules_framer-motion_dist_es_b8aec4._.js",
+      "static/chunks/node_modules_@react-aria_interactions_dist_684672._.js",
+      "static/chunks/node_modules_e8a982._.js",
+      "static/chunks/[project]_Desktop_hack2-a_basobash_frontend_acf017._.js",
+      "static/chunks/node_modules_@nextui-org_dom-animation_dist_index_mjs_2e6cc9._.js",
+      "static/chunks/app_layout_tsx_3d104b._.js",
+      "static/chunks/app_error_tsx_a6a7fd._.js",
+      "static/chunks/app_error_tsx_ccf682._.js",
+      "static/chunks/node_modules_next_dist_compiled_react-dom_8b490b._.js",
+      "static/chunks/node_modules_next_dist_compiled_1ec0c9._.js",
+      "static/chunks/node_modules_next_dist_client_e1c718._.js",
+      "static/chunks/node_modules_next_dist_e87e4f._.js",
+      "static/chunks/ed0b0_@swc_helpers_cjs_1611e2._.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_9eb696._.js",
+      "static/chunks/[project]_Desktop_hack2-a_basobash_frontend_c4c472._.js",
+      "static/chunks/[project]_Desktop_hack2-a_basobash_frontend_e5edf0._.js"
+    ]
+  }
+}
