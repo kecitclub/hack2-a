@@ -56,21 +56,25 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-10 bg-white rounded-lg space-y-5 shadow-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800">Register</h2>
+    <div className="flex items-center justify-center min-h-screen text-left">
+      <div className=" w-[350px] p-10 bg-white rounded-lg flex flex-col gap-4 shadow-md">
+        <h2 className="text-2xl font-bold text-center text-gray-800">
+          Register
+        </h2>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
-        
+
         <Input
           label="Name"
+          labelPlacement="outside"
           placeholder="Enter your name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        
+
         <Textarea
           label="Introduction"
+          labelPlacement="outside"
           placeholder="Tell us about yourself"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -79,46 +83,48 @@ const Register = () => {
         <div>
           <label className="block text-left text-gray-700 mb-2">Sex</label>
           <RadioGroup
-          className="text-md text-black accent-[#f63e3e]"
-          orientation="horizontal"
-          color="danger"
-          value={sex}
-          onChange={(e) => setSex(e.target.value)}
-        >
-          <Radio className="accent-[#f63e3e]" value="male">
-            Male
-          </Radio>
-          <Radio className="accent-[#f63e3e]" value="female">
-            Female
-          </Radio>
-          <Radio className="accent-[#f63e3e]" value="others">
-            Other
-          </Radio>
-        </RadioGroup>
+            className="text-md text-black accent-[#f63e3e]"
+            orientation="horizontal"
+            color="danger"
+            value={sex}
+            onChange={(e) => setSex(e.target.value)}
+          >
+            <Radio className="accent-[#f63e3e]" value="male">
+              Male
+            </Radio>
+            <Radio className="accent-[#f63e3e]" value="female">
+              Female
+            </Radio>
+            <Radio className="accent-[#f63e3e]" value="others">
+              Other
+            </Radio>
+          </RadioGroup>
         </div>
-        
+
         <Input
           label="Phone"
+          labelPlacement="outside"
           placeholder="Enter your phone number"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
-        
+
         <Input
           label="Password"
+          labelPlacement="outside"
           placeholder="Enter your password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        
+
         <button
           onClick={handleRegister}
           className="w-full px-4 py-2 text-white bg-[#f63e3e] hover:bg-[#fc4949] rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           Register
         </button>
-        
+
         <p className="text-sm text-center text-gray-600 mt-4">
           Already have an account?{" "}
           <span
