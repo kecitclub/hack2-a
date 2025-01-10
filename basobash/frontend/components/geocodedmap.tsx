@@ -137,7 +137,7 @@ const InitialLocationSetter = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        map.flyTo([latitude, longitude], 13);
+        map.flyTo([latitude, longitude], 16);
       },
       (error) => {
         console.error("Error getting user location:", error);
@@ -159,7 +159,7 @@ const GeocodedMap = () => {
       try {
         const response = await fetch('http://localhost:3000/api/properties');
         const data = await response.json();
-        
+        console.log(data);
         if (Array.isArray(data)) {
           setProperties(data);
         } else {
@@ -200,10 +200,10 @@ const GeocodedMap = () => {
             <InitialLocationSetter />
             {selectedLocation && <PanAndMarker location={selectedLocation} />}
             
-            {Array.isArray(properties) && properties.map((property) => (
+            {properties.map((property) => (
               <Marker
                 key={property._id}
-                position={[property.coordinates.lat, property.coordinates.lon]}
+                position={[property.latitude, property.longitude]}
               >
                 <Popup>
                   <h3 className="font-bold">{property.title}</h3>
