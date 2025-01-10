@@ -1,4 +1,4 @@
-import GeocodedMap from "@/components/geocodedmap";
+import GeocodedFindMap from "@/components/geocodedmap";
 import { title } from "@/components/primitives";
 import AutoCompleteSearch from "@/utils/AutoCompleteSearch";
 import "leaflet/dist/leaflet.css";
@@ -9,7 +9,7 @@ export default function page() {
     <div className="w-[80vw] h-[50vh]">
       <h1 className={`text-3xl font-semibold`}>Find</h1>
       <div className="p-5">
-        <GeocodedMap />
+        <GeocodedFindMap />
       </div>
     </div>
   );

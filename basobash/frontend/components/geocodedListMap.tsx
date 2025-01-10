@@ -10,17 +10,27 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import dynamic from "next/dynamic";
 
 const GEOAPIFY_API_KEY = "1f3eec48fa604cf7b262e4d4ba1d004c";
 
+// Fix for Leaflet's default icon
 delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+});
 
-// Define custom icon
+// Update customIcon definition to use absolute paths
 const customIcon = new L.Icon({
-  iconUrl: "/marker-green-bolt.png", // Replace with your custom marker image path
-  iconSize: [32, 32], // Adjust size as needed
-  iconAnchor: [16, 32], // Anchor point of the icon
-  popupAnchor: [0, -32], // Position of popup relative to the icon
+  iconUrl: "/leaflet/dist/images/marker-icon.png",
+  iconRetinaUrl: "/leaflet/dist/images/marker-icon-2x.png",
+  shadowUrl: "/leaflet/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
 });
 
 const GeocodedListMap = () => {
@@ -60,47 +70,60 @@ const GeocodedListMap = () => {
     }
   };
 
-  const handleSaveToDB = (desiredLocation) => {
+  const handleSaveToDB = () => {
     console.log("Saving markers to database:", markers);
-    console.log(desiredLocation);
-    alert(`Markers saved to database at ${desiredLocation}.`);
+    alert(`Markers saved to database.`);
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Enter a location to pan"
-        onKeyDown={(e) => {
-          if (e.key === "Enter") fetchGeocodedLocation(e.target.value);
-        }}
-        style={{ marginBottom: "10px", padding: "5px", width: "100%" }}
-      />
-      <MapContainer
-        center={[27.7172, 85.324]}
-        zoom={13}
-        style={{ height: "500px", width: "100%" }}
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    <div className="h-screen flex flex-col items-center justify-start">
+      {/* Search input with styling */}
+      <div className="absolute top-5 left-5 w-3/4 md:w-1/2 z-50">
+        <input
+          type="text"
+          placeholder="Enter a location to pan"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") fetchGeocodedLocation(e.target.value);
+          }}
+          className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <AddMarker />
-        {markers.map((marker, index) => (
-          <Marker
-            key={index}
-            icon={customIcon}
-            position={[marker.lat, marker.lng]}
-          >
-            <Popup>
-              Marker at {marker.lat}, {marker.lng}
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
-      <button onClick={handleSaveToDB} style={{ marginTop: "10px" }}>
-        Save Markers to Database
-      </button>
+      </div>
+
+      {/* Map container */}
+      <div className="w-full z-10 h-full">
+        <MapContainer
+          center={[27.7172, 85.324]}
+          zoom={13}
+          style={{ height: "100%", width: "100%" }}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          <AddMarker />
+          {markers.map((marker, index) => (
+            <Marker
+              key={index}
+              icon={customIcon}
+              position={[marker.lat, marker.lng]}
+            >
+              <Popup>
+                Marker at {marker.lat}, {marker.lng}
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </div>
+
+      {/* Save button */}
+      <div className="absolute bottom-5 left-5 z-50">
+        <button 
+          onClick={handleSaveToDB}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg"
+        >
+          Save Markers to Database
+        </button>
+      </div>
     </div>
   );
 };

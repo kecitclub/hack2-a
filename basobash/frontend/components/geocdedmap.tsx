@@ -3,13 +3,35 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import dynamic from "next/dynamic";
 
-// Fix Leaflet default icon paths
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-  iconUrl: require("leaflet/dist/images/marker-icon.png"),
-  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+
+// Dynamically import the MapContainer and related components
+const MapContainer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.MapContainer),
+  { ssr: false }
+);
+const TileLayer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.TileLayer),
+  { ssr: false }
+);
+const Marker = dynamic(
+  () => import("react-leaflet").then((mod) => mod.Marker),
+  { ssr: false }
+);
+const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
+  ssr: false,
+});
+
+// Add custom icon definition at the top level
+const customIcon = L.icon({
+  iconUrl: "/leaflet/dist/images/marker-icon.png",
+  iconRetinaUrl: "/leaflet/dist/images/marker-icon-2x.png",
+  shadowUrl: "/leaflet/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
 });
 
 const GEOAPIFY_API_KEY = "1f3eec48fa604cf7b262e4d4ba1d004c";
@@ -86,14 +108,17 @@ const PanAndMarker = ({ location }) => {
   }, [map, location]);
 
   return location ? (
-    <Marker position={[location.lat, location.lon]}>
+    <Marker 
+      position={[location.lat, location.lon]}
+      icon={customIcon}
+    >
       <Popup>{location.name}</Popup>
     </Marker>
   ) : null;
 };
 
 // Main Geocoded Map Component
-const GeocodedMap = () => {
+const GeocodedFindMap = () => {
   const [mapVisible, setMapVisible] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
 
@@ -131,4 +156,4 @@ const GeocodedMap = () => {
   );
 };
 
-export default GeocodedMap;
+export default GeocodedFindMap;
