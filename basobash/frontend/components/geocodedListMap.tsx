@@ -113,11 +113,36 @@ const GeocodedListMap = () => {
     setQuery(feature.properties.formatted);
   };
 
-  const handleSaveToDB = () => {
-    if (marker) {
-      setShowListForm((prev) => !prev);
-    } else {
-      alert("Please add a marker before saving.");
+  const handleFormSubmit = async (formData: any) => {
+    if (!marker) return;
+
+    // Combine form data with location data
+    const propertyData = {
+      ...formData,
+      location: `${marker.lat},${marker.lng}`, // Store coordinates as string
+      // Add any other necessary fields
+    };
+
+    try {
+      const response = await fetch("/api/properties", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(propertyData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save property");
+      }
+
+      // Handle successful submission
+      setShowListForm(false);
+      setMarker(null);
+      // Optionally add success message or redirect
+    } catch (error) {
+      console.error("Error saving property:", error);
+      alert("Failed to save property. Please try again.");
     }
   };
 
@@ -185,16 +210,16 @@ const GeocodedListMap = () => {
           {/* ListForm - improved border styling */}
         </div>
         {showListForm && (
-          <div className="w-1/2 h-full p-4 bg-white border-l border-gray-200 overflow-y-auto shadow-inner">
-            <ListForm marker={marker} />
+          <div className="w-1/2 h-full p-4 bg-white border-2 shadow-md border-gray-200 rounded-md overflow-y-auto">
+            <ListForm marker={marker} onSubmit={handleFormSubmit} />
           </div>
         )}
       </div>
       {/* Save button - improved positioning and styling */}
       <div className="absolute bottom-5 left-5 z-[1000]">
         <button
-          onClick={handleSaveToDB}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-colors duration-200"
+          onClick={() => setShowListForm((prev) => !prev)}
+          className="bg-[#f63e3e] hover:bg-[#fc4949] shadow-md text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-colors duration-200"
         >
           {showListForm ? "Hide Form" : "Add Location"}
         </button>

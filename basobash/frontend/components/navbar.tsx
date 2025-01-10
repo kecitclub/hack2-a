@@ -43,9 +43,9 @@ export const Navbar = () => {
     <NextUINavbar maxWidth="xl" position="sticky" className="fixed z-50 ">
       <NavbarContent className="basis-1/5 sm:basis-full flex justify-between ">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
-          <NextLink className="flex justify-start items-center gap-1" href="/">
+          <NextLink className="flex justify-center items-end gap-1" href="/">
             <Image src={logoColored} alt="Logo" width={20} />
-            <span className="text-[#f63e3e] -ml-[2px] font-semibold">
+            <span className="text-[#f63e3e] -ml-[2px] -mb-[4.25px] font-semibold">
               asobas
             </span>
           </NextLink>
