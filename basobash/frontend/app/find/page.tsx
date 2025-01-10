@@ -1,26 +1,15 @@
-import { Input } from "@nextui-org/input";
-
-import { SearchIcon } from "@/components/icons";
+import GeocodedMap from "@/components/geocdedmap";
 import { title } from "@/components/primitives";
+import AutoCompleteSearch from "@/utils/AutoCompleteSearch";
+import "leaflet/dist/leaflet.css";
+import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 
-export default function PricingPage() {
+export default function page() {
   return (
-    <div>
-      <h1 className={title()}>Find</h1>
-      <div>
-        <Input
-          aria-label="Search"
-          classNames={{
-            inputWrapper: "bg-default-100",
-            input: "text-sm",
-          }}
-          labelPlacement="outside"
-          placeholder="Search..."
-          startContent={
-            <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
-          }
-          type="search"
-        />
+    <div className="w-[80vw] h-[50vh]">
+      <h1 className={`text-3xl font-semibold`}>Find</h1>
+      <div className="p-5">
+        <GeocodedMap />
       </div>
     </div>
   );
