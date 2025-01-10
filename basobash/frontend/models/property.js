@@ -26,6 +26,16 @@ const propertySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  coordinates: {
+    lat: {
+      type: Number,
+      required: true,
+    },
+    lon: {
+      type: Number,
+      required: true,
+    }
+  },
   bedrooms: {
     type: Number,
     required: true,

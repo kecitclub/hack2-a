@@ -1,0 +1,170 @@
+[{
+  "_id": {
+    "$oid": "6780e6da3d7282b4d9145818"
+  },
+  "title": "Property 20 in Kathmandu",
+  "description": "Description for Property 20. A great property located in Kathmandu.",
+  "price": 200000,
+  "location": "Location 20, Kathmandu",
+  "bedrooms": 5,
+  "bathrooms": 2,
+  "kitchen": 0,
+  "images": [
+    "https://via.placeholder.com/150?text=Property+20"
+  ],
+  "latitude": 27.718999999999998,
+  "longitude": 85.319
+},
+{
+  "_id": {
+    "$oid": "6780e6f23d7282b4d9145819"
+  },
+  "title": "Property 19 in Kathmandu",
+  "description": "Description for Property 19. A great property located in Kathmandu.",
+  "price": 190000,
+  "location": "Location 19, Kathmandu",
+  "bedrooms": 4,
+  "bathrooms": 1,
+  "kitchen": 1,
+  "images": [
+    "https://via.placeholder.com/150?text=Property+19"
+  ],
+  "latitude": 27.718,
+  "longitude": 85.318
+},
+{
+  "_id": {
+    "$oid": "6780e7043d7282b4d914581a"
+  },
+  "title": "Property 18 in Kathmandu",
+  "description": "Description for Property 18. A great property located in Kathmandu.",
+  "price": 180000,
+  "location": "Location 18, Kathmandu",
+  "bedrooms": 3,
+  "bathrooms": 3,
+  "kitchen": 0,
+  "images": [
+    "https://via.placeholder.com/150?text=Property+18"
+  ],
+  "latitude": 27.717,
+  "longitude": 85.317
+},
+{
+  "_id": {
+    "$oid": "6780e71c3d7282b4d914581b"
+  },
+  "title": "Property 17 in Kathmandu",
+  "description": "Description for Property 17. A great property located in Kathmandu.",
+  "price": 170000,
+  "location": "Location 17, Kathmandu",
+  "bedrooms": 2,
+  "bathrooms": 2,
+  "kitchen": 1,
+  "images": [
+    "https://via.placeholder.com/150?text=Property+17"
+  ],
+  "latitude": 27.715999999999998,
+  "longitude": 85.316
+},
+{
+  "_id": {
+    "$oid": "6780e72a3d7282b4d914581c"
+  },
+  "title": "Property 16 in Kathmandu",
+  "description": "Description for Property 16. A great property located in Kathmandu.",
+  "price": 160000,
+  "location": "Location 16, Kathmandu",
+  "bedrooms": 1,
+  "bathrooms": 1,
+  "kitchen": 0,
+  "images": [
+    "https://via.placeholder.com/150?text=Property+16"
+  ],
+  "latitude": 27.715,
+  "longitude": 85.315
+},
+{
+  "_id": {
+    "$oid": "6780e7373d7282b4d914581d"
+  },
+  "title": "Property 15 in Kathmandu",
+  "description": "Description for Property 15. A great property located in Kathmandu.",
+  "price": 150000,
+  "location": "Location 15, Kathmandu",
+  "bedrooms": 5,
+  "bathrooms": 3,
+  "kitchen": 1,
+  "images": [
+    "https://via.placeholder.com/150?text=Property+15"
+  ],
+  "latitude": 27.714,
+  "longitude": 85.314
+},
+{
+  "_id": {
+    "$oid": "6780e7473d7282b4d914581e"
+  },
+  "title": "Property 14 in Kathmandu",
+  "description": "Description for Property 14. A great property located in Kathmandu.",
+  "price": 140000,
+  "location": "Location 14, Kathmandu",
+  "bedrooms": 4,
+  "bathrooms": 2,
+  "kitchen": 0,
+  "images": [
+    "https://via.placeholder.com/150?text=Property+14"
+  ],
+  "latitude": 27.713,
+  "longitude": 85.313
+},
+{
+  "_id": {
+    "$oid": "6780e7703d7282b4d914581f"
+  },
+  "title": "Property 8 in Kathmandu",
+  "description": "Description for Property 8. A great property located in Kathmandu.",
+  "price": 80000,
+  "location": "Location 8, Kathmandu",
+  "bedrooms": 3,
+  "bathrooms": 2,
+  "kitchen": 0,
+  "images": [
+    "https://via.placeholder.com/150?text=Property+8"
+  ],
+  "latitude": 27.707,
+  "longitude": 85.307
+},
+{
+  "_id": {
+    "$oid": "6780e7723d7282b4d9145820"
+  },
+  "title": "Property 8 in Kathmandu",
+  "description": "Description for Property 8. A great property located in Kathmandu.",
+  "price": 80000,
+  "location": "Location 8, Kathmandu",
+  "bedrooms": 3,
+  "bathrooms": 2,
+  "kitchen": 0,
+  "images": [
+    "https://via.placeholder.com/150?text=Property+8"
+  ],
+  "latitude": 27.707,
+  "longitude": 85.307
+},
+{
+  "_id": {
+    "$oid": "6780e7803d7282b4d9145821"
+  },
+  "title": "Property 7 in Kathmandu",
+  "description": "Description for Property 7. A great property located in Kathmandu.",
+  "price": 70000,
+  "location": "Location 7, Kathmandu",
+  "bedrooms": 2,
+  "bathrooms": 1,
+  "kitchen": 1,
+  "images": [
+    "https://via.placeholder.com/150?text=Property+7"
+  ],
+  "latitude": 27.706,
+  "longitude": 85.306
+}]

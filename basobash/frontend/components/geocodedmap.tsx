@@ -26,6 +26,17 @@ interface Feature {
   properties: { formatted: string };
 }
 
+interface Property {
+  _id: string;
+  title: string;
+  price: number;
+  coordinates: {
+    lat: number;
+    lon: number;
+  };
+  location: string;
+}
+
 // Search Bar with Geoapify Autocomplete
 const SearchBarWithAutocomplete = ({
   onLocationSelected,
@@ -141,6 +152,28 @@ const GeocodedMap = () => {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null
   );
+  const [properties, setProperties] = useState<Property[]>([]);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/properties');
+        const data = await response.json();
+        
+        if (Array.isArray(data)) {
+          setProperties(data);
+        } else {
+          console.error('Received invalid data format:', data);
+          setProperties([]);
+        }
+      } catch (error) {
+        console.error('Error fetching properties:', error);
+        setProperties([]);
+      }
+    };
+
+    fetchProperties();
+  }, []);
 
   const handleLocationSelected = (location: Location) => {
     setSelectedLocation(location);
@@ -156,7 +189,7 @@ const GeocodedMap = () => {
       <div className="h-[500px] flex flex-col items-center justify-start">
         <div className="w-full z-10 h-full">
           <MapContainer
-            center={[27.71, 85.32]} // Default center, will be updated by InitialLocationSetter
+            center={[27.71, 85.32]}
             zoom={13}
             style={{ height: "100%", width: "100%" }}
           >
@@ -166,6 +199,19 @@ const GeocodedMap = () => {
             />
             <InitialLocationSetter />
             {selectedLocation && <PanAndMarker location={selectedLocation} />}
+            
+            {Array.isArray(properties) && properties.map((property) => (
+              <Marker
+                key={property._id}
+                position={[property.coordinates.lat, property.coordinates.lon]}
+              >
+                <Popup>
+                  <h3 className="font-bold">{property.title}</h3>
+                  <p>{property.location}</p>
+                  <p className="font-semibold">Price: ${property.price}</p>
+                </Popup>
+              </Marker>
+            ))}
           </MapContainer>
         </div>
       </div>
