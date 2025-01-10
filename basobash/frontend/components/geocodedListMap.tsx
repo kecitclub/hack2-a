@@ -69,7 +69,7 @@ const GeocodedListMap = () => {
           console.error("Error getting user location:", error);
         }
       );
-    }, [map]); // Only run once when map is available
+    }, [map]); 
 
     useEffect(() => {
       if (selectedLocation) {
@@ -116,11 +116,10 @@ const GeocodedListMap = () => {
   const handleFormSubmit = async (formData: any) => {
     if (!marker) return;
 
-    // Combine form data with location data
     const propertyData = {
       ...formData,
-      location: `${marker.lat},${marker.lng}`, // Store coordinates as string
-      // Add any other necessary fields
+      location: `${marker.lat},${marker.lng}`, 
+      
     };
 
     try {
@@ -136,10 +135,9 @@ const GeocodedListMap = () => {
         throw new Error("Failed to save property");
       }
 
-      // Handle successful submission
+      
       setShowListForm(false);
       setMarker(null);
-      // Optionally add success message or redirect
     } catch (error) {
       console.error("Error saving property:", error);
       alert("Failed to save property. Please try again.");
