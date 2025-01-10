@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/OMEN/Desktop/hack2-a/basobash/frontend/Desktop/hack2-a/basobash/frontend/app/register/layout.tsx"],"sourcesContent":["export default function PricingLayout({\n  children,\n}: {\n  children: React.ReactNode;\n}) {\n  return (\n    <section className=\"min-h-screen flex flex-col items-center justify-center gap-4 py-8 md:py-10\">\n      <div className=\"inline-block max-w-lg text-center justify-center\">\n        {children}\n      </div>\n    </section>\n  );\n}\n"],"names":[],"mappings":";;;;;AAAe,SAAS,cAAc,EACpC,QAAQ,EAGT;IACC,qBACE,+RAAC;QAAQ,WAAU;kBACjB,cAAA,+RAAC;YAAI,WAAU;sBACZ;;;;;;;;;;;AAIT"}},
-    {"offset": {"line": 29, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
-}
