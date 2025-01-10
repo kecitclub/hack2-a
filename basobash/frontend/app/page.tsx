@@ -50,8 +50,8 @@ const Home = () => {
   if (!isClient) return null; // Prevent rendering during SSR
 
   return (
-    <section className="relative h-screen flex items-center justify-center  md:py-10 overflow-hidden">
-      <div className="flex flex-wrap gap-[120px] justify-center">
+    <section className="relative h-screen min-h-[600px] flex items-center justify-center  md:py-10 overflow-hidden w-full">
+      <div className="flex flex-wrap gap-x-[120px] gap-y-[50px] justify-center mt-[150px] md:mt-0">
         <div className="flex flex-col  text-center justify-center items-center z-10">
           <div className="flex gap-1 items-end">
             <Image
@@ -60,7 +60,7 @@ const Home = () => {
               width={50}
               className="md:w-[50px] w-[30px]"
             />
-            <span className="text-3xl md:text-5xl text-[#f63e3f] font-semibold">
+            <span className="text-3xl md:text-5xl text-[#f63e3f] font-bold -mb-[4px]">
               asobas
             </span>
           </div>
@@ -73,13 +73,13 @@ const Home = () => {
               className={`px-6 py-2 rounded-full bg-[#f63e3f] text-white font-semibold`}
               onClick={() => handleButtonClick(siteConfig.links.find)}
             >
-              Find
+              Find a place
             </button>
             <button
               className={`px-6 py-2 rounded-full border-2 border-[#f63e3f] text-black font-semibold`}
               onClick={() => handleButtonClick(siteConfig.links.list)}
             >
-              List
+              List a place
             </button>
           </div>
         </div>
@@ -88,11 +88,11 @@ const Home = () => {
           src={roommatesChilling}
           alt="House Search"
           width={500}
-          className="select-none"
+          className="select-none md:w-auto w-[70%]"
         />
       </div>
       <Image
-        className="absolute -bottom-[100px] scale-110 w-screen  select-none"
+        className="absolute bottom-0 md:-bottom-[100px] scale-110 w-full  select-none"
         src={waves}
         alt="Decorative waves"
         width={1920}

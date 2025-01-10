@@ -118,8 +118,7 @@ const GeocodedListMap = () => {
 
     const propertyData = {
       ...formData,
-      location: `${marker.lat},${marker.lng}`, 
-      
+      location: `${marker.lat},${marker.lng}`, // Store coordinates as string
     };
 
     try {
@@ -146,10 +145,10 @@ const GeocodedListMap = () => {
 
   return (
     <div className="h-[500px] w-full flex flex-col justify-center items-center relative">
-      {/* Search input with autocomplete - improved spacing and z-index */}
-
       <div className="flex flex-row gap-10 h-full w-full">
-        <div className={`flex-grow transition-all duration-300 ${showListForm ? 'w-1/2' : 'w-full'}`}>
+        <div
+          className={`flex-grow transition-all duration-300 ${showListForm ? "w-1/2" : "w-full"}`}
+        >
           <MapContainer
             center={[27.7172, 85.324]}
             zoom={16}
@@ -203,7 +202,7 @@ const GeocodedListMap = () => {
           <div className="w-1/2 h-full p-4 bg-white border-2 shadow-md border-gray-200 rounded-md overflow-y-auto">
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-2xl font-bold">Add New Property</h2>
-              <button 
+              <button
                 onClick={() => setShowListForm(false)}
                 className="text-gray-500 hover:text-gray-700"
               >
@@ -218,7 +217,7 @@ const GeocodedListMap = () => {
       <div className="absolute bottom-5 left-5 z-[1000]">
         <button
           onClick={() => setShowListForm((prev) => !prev)}
-          className="bg-[#f63e3e] hover:bg-[#fc4949] shadow-md text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-colors duration-200"
+          className="bg-[#f63e3e] hover:bg-[#fc4949] rounded-full text-white font-bold py-3 px-6 shadow-lg transition-colors duration-200"
         >
           {showListForm ? "Hide Form" : "Add Location"}
         </button>
