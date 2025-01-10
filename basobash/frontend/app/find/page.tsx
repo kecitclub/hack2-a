@@ -1,4 +1,4 @@
-import GeocodedMap from "@/components/geocdedmap";
+import GeocodedMap from "@/components/geocodedmap";
 import { title } from "@/components/primitives";
 import AutoCompleteSearch from "@/utils/AutoCompleteSearch";
 import "leaflet/dist/leaflet.css";
