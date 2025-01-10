@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -15,6 +16,9 @@ import clsx from "clsx";
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 
+import logo from "@/public/assets/images/logo.svg";
+import logoColored from "@/public/assets/images/logo-colored.svg";
+
 export const Navbar = () => {
   return (
     <NextUINavbar
@@ -25,7 +29,10 @@ export const Navbar = () => {
       <NavbarContent className="basis-1/5 sm:basis-full flex justify-between ">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
-            <p className="font-bold text-inherit">Basobas</p>
+            <Image src={logoColored} alt="Logo" width={20} />
+            <span className="text-[#f63e3e] -ml-[2px] font-semibold">
+              asobas
+            </span>
           </NextLink>
         </NavbarBrand>
       </NavbarContent>

@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-import GeocodedMap from "@/components/geocodedmap";
-=======
 import GeocodedFindMap from "@/components/geocodedmap";
-import { title } from "@/components/primitives";
-import AutoCompleteSearch from "@/utils/AutoCompleteSearch";
->>>>>>> 6bba7fe6115c58a2bf3508f46d968c0dd4bf077e
 import "leaflet/dist/leaflet.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 
