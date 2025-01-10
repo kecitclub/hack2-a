@@ -60,7 +60,7 @@ const Home = () => {
               width={50}
               className="md:w-[50px] w-[30px]"
             />
-            <span className="text-3xl md:text-5xl text-[#f63e3f] font-semibold">
+            <span className="text-3xl md:text-5xl text-[#f63e3f] font-bold -mb-[3px]">
               asobas
             </span>
           </div>
@@ -73,13 +73,13 @@ const Home = () => {
               className={`px-6 py-2 rounded-full bg-[#f63e3f] text-white font-semibold`}
               onClick={() => handleButtonClick(siteConfig.links.find)}
             >
-              Find
+              Find a place
             </button>
             <button
               className={`px-6 py-2 rounded-full border-2 border-[#f63e3f] text-black font-semibold`}
               onClick={() => handleButtonClick(siteConfig.links.list)}
             >
-              List
+              List a place
             </button>
           </div>
         </div>
@@ -92,7 +92,7 @@ const Home = () => {
         />
       </div>
       <Image
-        className="absolute -bottom-[100px] scale-110 w-screen  select-none"
+        className="absolute -bottom-[100px] scale-110 w-screen h-auto  select-none"
         src={waves}
         alt="Decorative waves"
         width={1920}
