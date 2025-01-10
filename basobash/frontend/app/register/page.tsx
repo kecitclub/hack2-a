@@ -14,7 +14,7 @@ const Register = () => {
   const router = useRouter();
 
   const validatePhone = (phone: string) => {
-    const phoneRegex = /^[0-9]{10}$/; 
+    const phoneRegex = /^[0-9]{10}$/;
     return phoneRegex.test(phone);
   };
 
@@ -25,7 +25,7 @@ const Register = () => {
   const handleRegister = async () => {
     setError("");
     setSuccess("");
-  
+
     // Validate inputs
     if (!name || !description || !phone || !password || !sex) {
       setError("All fields are required");
@@ -39,7 +39,7 @@ const Register = () => {
       setError("Password must be at least 6 characters");
       return;
     }
-  
+
     try {
       const response = await fetch("http://localhost:3000/api/auth/signup", {
         method: "POST",
@@ -54,9 +54,9 @@ const Register = () => {
           sex,
         }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         setSuccess("Registration successful. Redirecting to login...");
         setTimeout(() => router.push("/login"), 2000);
@@ -67,11 +67,10 @@ const Register = () => {
       setError("An error occurred. Please try again.");
     }
   };
-  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full ">
         <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
@@ -141,7 +140,7 @@ const Register = () => {
           Register
         </button>
         <p className="text-sm text-center text-gray-600 mt-4">
-          Already have an account? 
+          Already have an account?
           <span
             onClick={() => router.push("/login")}
             className="text-blue-500 cursor-pointer hover:underline"

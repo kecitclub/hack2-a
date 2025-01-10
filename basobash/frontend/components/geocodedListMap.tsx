@@ -219,7 +219,7 @@ const GeocodedListMap = () => {
       <div className="absolute bottom-5 left-5 z-[1000]">
         <button
           onClick={() => setShowListForm((prev) => !prev)}
-          className="bg-[#f63e3e] hover:bg-[#fc4949] shadow-md text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-colors duration-200"
+          className="bg-[#f63e3e] hover:bg-[#fc4949]  text-white font-bold py-3 px-6 rounded-full shadow-lg transition-colors duration-200"
         >
           {showListForm ? "Hide Form" : "Add Location"}
         </button>

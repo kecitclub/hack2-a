@@ -76,7 +76,7 @@ const SearchBarWithAutocomplete = ({
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto z-50">
+    <div className="relative w-full  mx-auto z-50">
       <input
         type="text"
         value={query}
