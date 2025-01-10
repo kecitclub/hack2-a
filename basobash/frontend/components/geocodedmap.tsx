@@ -65,20 +65,20 @@ const SearchBarWithAutocomplete = ({
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto z-0">
+    <div className="relative w-full max-w-md mx-auto z-50">
       <input
         type="text"
         value={query}
         onChange={handleInputChange}
         placeholder="Search for a location..."
-        className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="relative w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       {suggestions.length > 0 && (
-        <ul className="absolute z-50 text-black text-left bg-white w-full shadow-lg rounded-lg mt-1 max-h-60 overflow-y-auto">
+        <ul className="absolute z-[60] text-black text-left bg-white w-full shadow-lg rounded-lg mt-1 max-h-60 overflow-y-auto">
           {suggestions.map((feature, index) => (
             <button
               key={index}
-              className="p-2 text-left hover:bg-gray-100 cursor-pointer"
+              className="p-2 text-left hover:bg-gray-100 cursor-pointer z-20"
               onClick={() => handleSuggestionClick(feature)}
               onKeyDown={(e) =>
                 e.key === "Enter" && handleSuggestionClick(feature)
@@ -107,7 +107,13 @@ const PanAndMarker = ({ location }: { location: Location }) => {
 
   return location ? (
     <Marker position={[location.lat, location.lon]}>
-      <Popup>{location.name}</Popup>
+      <Popup>
+        {location.name}
+        <span className="block mt-2">
+          {location.lat}
+          {location.lon}{" "}
+        </span>
+      </Popup>
     </Marker>
   ) : null;
 };
@@ -125,12 +131,12 @@ const GeocodedMap = () => {
 
   return (
     <>
-      <div className="absolute top-5 left-5 w-3/4 md:w-1/2">
+      <div className="flex justify-center w-full py-5">
         <SearchBarWithAutocomplete
           onLocationSelected={handleLocationSelected}
         />
       </div>
-      <div className="h-screen flex flex-col items-center justify-start">
+      <div className="h-[500px] flex flex-col items-center justify-start">
         {/* Search Bar */}
 
         {/* Map */}
