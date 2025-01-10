@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Link } from "@nextui-org/link";
 import { button as buttonStyles } from "@nextui-org/theme";
 import Image from "next/image";
 
@@ -52,15 +51,22 @@ const Home = () => {
   if (!isClient) return null; // Prevent rendering during SSR
 
   return (
-    <section className="relative h-screen flex items-start justify-center md:py-10 overflow-hidden">
-      <div className="flex gap-[120px] pt-[200px]">
+    <section className="relative h-screen flex items-center justify-center  md:py-10 overflow-hidden">
+      <div className="flex flex-wrap gap-[120px] justify-center">
         <div className="flex flex-col max-w-xl text-center justify-center items-center z-10">
           <div className="flex gap-1 items-end">
-            <Image src={logoColored} alt="Logo" width={50} />
-            <span className="text-5xl text-[#f63e3e] font-semibold">asobas</span>
+            <Image
+              src={logoColored}
+              alt="Logo"
+              width={50}
+              className="md:w-[50px] w-[30px]"
+            />
+            <span className="text-3xl md:text-5xl text-[#f63e3e] font-semibold">
+              asobas
+            </span>
           </div>
           <br />
-          <div className="tracking-tight text-lg mt-2">
+          <div className={` tracking-tight text-md md:text-lg mt-2`}>
             Find your place. Find your people
           </div>
           <div className="flex gap-2 z-10 mt-5">
@@ -86,14 +92,21 @@ const Home = () => {
             </button>
           </div>
         </div>
-        <Image src={roommatesChilling} alt="House Search" width={500} />
+
+        <Image
+          src={roommatesChilling}
+          alt="House Search"
+          width={500}
+          className="select-none"
+        />
       </div>
       <Image
-        className="absolute -bottom-[100px] scale-110 w-screen"
+        className="absolute -bottom-[100px] scale-110 w-screen select-none"
         src={waves}
         alt="Decorative waves"
-        width={1920}
-        style={{ objectFit: "cover" }}
+        width={3840}
+        height={100}
+        style={{ objectFit: "cover", width: "100vw", height: "auto" }}
       />
     </section>
   );

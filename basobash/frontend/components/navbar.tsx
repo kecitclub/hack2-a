@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import Image from "next/image";
 import {
   Navbar as NextUINavbar,
@@ -15,7 +16,6 @@ import NextLink from "next/link";
 import clsx from "clsx";
 import { useEffect, useState } from "react"; // import useState, useEffect for token management
 import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/theme-switch";
 
 import logoColored from "@/public/assets/images/logo-colored.svg";
 
@@ -40,11 +40,7 @@ export const Navbar = () => {
       ];
 
   return (
-    <NextUINavbar
-      maxWidth="xl"
-      position="sticky"
-      className="fixed z-10 bg-transparent"
-    >
+    <NextUINavbar maxWidth="xl" position="sticky" className="fixed z-10 ">
       <NavbarContent className="basis-1/5 sm:basis-full flex justify-between ">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
@@ -81,7 +77,6 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-        <ThemeSwitch />
         <NavbarMenuToggle />
       </NavbarContent>
 
@@ -90,15 +85,14 @@ export const Navbar = () => {
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link
-                color={
+                className={`${
                   index === 2
-                    ? "primary"
+                    ? "text-black"
                     : index === siteConfig.navMenuItems.length - 1
-                      ? "secondary"
-                      : "foreground"
-                }
+                      ? "text-[#f63e3e]"
+                      : "text-black"
+                } font-medium tracking tight text-md`}
                 href={`${item.href}`}
-                size="lg"
               >
                 {item.label}
               </Link>
