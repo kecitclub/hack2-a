@@ -31,6 +31,6 @@
     "lib/mongodb.js",
     "app/dashboard",
     "models/user.js"
-  ],
+, "components/listForm.jsx"  ],
   "exclude": ["node_modules"]
 }
