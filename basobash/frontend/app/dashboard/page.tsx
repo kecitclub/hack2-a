@@ -41,22 +41,76 @@ const Dashboard = () => {
   }, [router]);
 
   return (
-    <div>
-      <h2>Dashboard</h2>
-      <p>{message}</p>
-      {userData && (
-        <div>
-            <br></br>
-          <h3>Profile Details:</h3>
-          <p><Image src="/profile.jpg" alt="profile" width={300} height={300}></Image></p>
-          <p><strong>Name:</strong> {userData.name}</p>
-          <p><strong>Phone:</strong> {userData.phone}</p>
-          <p><strong>Sex:</strong> {userData.sex}</p>
-          <p><strong>Description:</strong> {userData.description}</p>
-        </div>
-      )}
+    <div style={styles.container}>
+      <header style={styles.header}>
+        <h1 style={styles.headerText}>Dashboard</h1>
+      </header>
+      <main style={styles.mainContent}>
+        <p style={styles.message}>{message}</p>
+        {userData && (
+          <div style={styles.profileCard}>
+            <Image
+              src="/profile.jpg"
+              alt="profile"
+              width={150}
+              height={150}
+              style={styles.profileImage}
+            />
+            <div style={styles.profileDetails}>
+              <p><strong>Name:</strong> {userData.name}</p>
+              <p><strong>Phone:</strong> {userData.phone}</p>
+              <p><strong>Sex:</strong> {userData.sex}</p>
+              <p><strong>Description:</strong> {userData.description}</p>
+            </div>
+          </div>
+        )}
+      </main>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    fontFamily: "Arial, sans-serif",
+    color: "#333",
+    backgroundColor: "#f9f9f9",
+    minHeight: "100vh",
+    margin: 0,
+    padding: 0,
+  },
+  header: {
+    backgroundColor: "#f63e3e",
+    padding: "20px",
+    textAlign: "center",
+  },
+  headerText: {
+    color: "#fff",
+    margin: 0,
+    fontSize: "24px",
+  },
+  mainContent: {
+    padding: "20px",
+    textAlign: "center",
+  },
+  message: {
+    fontSize: "18px",
+    marginBottom: "20px",
+  },
+  profileCard: {
+    backgroundColor: "#fff",
+    padding: "20px",
+    borderRadius: "8px",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    display: "inline-block",
+    textAlign: "left",
+  },
+  profileImage: {
+    borderRadius: "50%",
+    marginBottom: "10px",
+  },
+  profileDetails: {
+    textAlign: "left",
+  },
 };
 
 export default Dashboard;
