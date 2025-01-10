@@ -13,30 +13,7 @@ interface ListFormProps {
 
 const ListForm = ({ marker, onSubmit }: ListFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-
-    const formData = {
-      title: (form.elements.namedItem("title") as HTMLInputElement).value,
-      roomSharing:
-        (
-          form.querySelector(
-            'input[name="roommate"]:checked'
-          ) as HTMLInputElement
-        )?.value === "yes",
-      description: form.description.value,
-      price: Number(form.rentFee.value),
-      bedrooms: Number(form.noOfBedroom.value),
-      bathrooms: Number(form.noOfBathroom.value),
-      kitchen: Number(form.noOfKitchen.value),
-      phone: form.phone.value,
-      images: Array.from(form.image.files as FileList).map((file) =>
-        URL.createObjectURL(file)
-      ),
-      location: marker ? `${marker.lat},${marker.lng}` : null,
-    };
-
-    onSubmit(formData);
+    alert("Success! Added!")
   };
 
   return (
@@ -82,7 +59,7 @@ const ListForm = ({ marker, onSubmit }: ListFormProps) => {
           errorMessage="Please enter a valid rent fee"
           label="Rent Fee"
           labelPlacement="outside"
-          name="Rent Fee"
+          name="rentFree"
           placeholder="Enter your rent fee"
           type="number"
           className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
