@@ -34,13 +34,13 @@ export default function RootLayout({
       <head />
       <body
         className={clsx(
-          "min-h-screen w-screen font-sans antialiased bg-[#fffbfb] ",
+          "min-h-screen h-auto w-screen font-sans antialiased bg-[#fffbfb] ",
           fontSans.variable
         )}
       >
-        <div className="relative flex flex-col justify-start items-center w-screen h-screen">
+        <div className="relative flex flex-col justify-start items-center w-screen h-auto">
           <Navbar />
-          <main className="w-screen">{children}</main>
+          <main className="w-screen h-auto">{children}</main>
         </div>
       </body>
     </html>
