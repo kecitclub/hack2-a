@@ -402,7 +402,7 @@ const GeocodedMap = () => {
                               )}
                               {property.bedrooms > 0 && (
                                 <span title="Number of Bedrooms" className="text-gray-600">
-                                  🛏️ {property.bedrooms} Beds
+                                  🛏️ {property.bedrooms} Bedrooms
                                 </span>
                               )}
                               {property.kitchen > 0 && (
@@ -568,7 +568,7 @@ const GeocodedMap = () => {
                       )}
                       {property.bedrooms > 0 && (
                         <span title="Number of Bedrooms" className="text-gray-600">
-                          🛏️ {property.bedrooms} Beds
+                          🛏️ {property.bedrooms} Bedrooms
                         </span>
                       )}
                       {property.kitchen > 0 && (
