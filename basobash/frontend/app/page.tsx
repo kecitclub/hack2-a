@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import logoColored from "@/public/assets/images/logo-colored.svg";
-import roommatesChilling from "@/public/assets/images/undraw_chilling_o2zv.svg";
+import houseSearch from "@/public/assets/images/undraw_house-searching_g2b8.svg";
 import waves from "@/public/assets/images/design/wave.svg";
 
 import { siteConfig } from "@/config/site";
@@ -14,7 +14,7 @@ const Home = () => {
   const router = useRouter();
 
   useEffect(() => {
-    setIsClient(true); // Ensure component renders only after mounting
+    setIsClient(true); 
   }, []);
 
   const checkAuthToken = async (link: string) => {
@@ -85,7 +85,7 @@ const Home = () => {
         </div>
 
         <Image
-          src={roommatesChilling}
+          src={houseSearch}
           alt="House Search"
           width={500}
           className="select-none md:w-auto w-[70%]"

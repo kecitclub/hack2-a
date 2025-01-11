@@ -38,7 +38,7 @@ const Login = () => {
       }
 
       if (response.ok && data.token) {
-       // alert("Login successful");
+        // alert("Login successful");
         localStorage.setItem("token", data.token);
         router.push("/");
       } else {
@@ -86,7 +86,7 @@ const Login = () => {
         </p>
         <button
           onClick={handleLogin}
-          className="w-full px-4 py-2 text-white bg-[#f63e3e] hover:bg-[#fc4949] rounded-full  hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full px-4 py-2 text-white bg-[#f63e3e] hover:bg-[#fc4949] rounded-full  focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           Login
         </button>
