@@ -8,5 +8,9 @@ const nextConfig = {
     }
     return config;
   },
+  images: {
+    domains: ['dynamic-media-cdn.tripadvisor.com'],
+  },
 };
+
 module.exports = nextConfig;

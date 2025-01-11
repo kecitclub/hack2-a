@@ -32,7 +32,6 @@ export const Navbar = () => {
     }
   }, []); // Empty dependency array means it runs once when the component mounts
 
-  // Define the links to be displayed in the navbar based on the authentication state
   const navItems = isAuthenticated
     ? [
         {
@@ -85,7 +84,7 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
-          <ul className="hidden lg:flex gap-4 justify-start ">
+          <ul className="hidden md:flex gap-4 justify-start ">
             {navItems.map((item) => (
               <NavbarItem key={item.href}>
                 <NextLink

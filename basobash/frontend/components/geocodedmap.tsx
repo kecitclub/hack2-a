@@ -9,6 +9,7 @@ import {
   Circle,
 } from "react-leaflet";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -218,7 +219,9 @@ const GeocodedMap = () => {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [properties, setProperties] = useState<Property[]>([]);
   const [radius, setRadius] = useState<number>(1);
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(
+    null
+  );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [locationTrigger, setLocationTrigger] = useState(0);
 
@@ -253,7 +256,6 @@ const GeocodedMap = () => {
 
   const filteredProperties = properties.filter(property => {
     if (!selectedLocation) return true;
-    
     const distance = calculateDistance(
       selectedLocation.lat,
       selectedLocation.lon,
@@ -275,7 +277,7 @@ const GeocodedMap = () => {
             Check My Location
           </button>
         </div>
-        
+
         <div className="w-full max-w-md flex flex-col items-center gap-2">
           <label htmlFor="radius" className="text-sm font-medium">
             Search Radius: {radius.toFixed(1)} km
@@ -300,15 +302,13 @@ const GeocodedMap = () => {
             zoom={13}
             style={{ height: "100%", width: "100%" }}
           >
-            <SearchBarWithAutocomplete
-              onLocationSelected={handleLocationSelected}
-            />
+            <SearchBarWithAutocomplete onLocationSelected={handleLocationSelected} />
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            <InitialLocationSetter 
-              onLocationFound={handleLocationFound} 
+            <InitialLocationSetter
+              onLocationFound={handleLocationFound}
               trigger={locationTrigger}
             />
             {selectedLocation && (
@@ -346,6 +346,7 @@ const GeocodedMap = () => {
 
         <div className="w-1/3 h-full">
           {selectedProperty ? (
+            // When a property is selected:
             <div className="h-full flex flex-col gap-4">
               {/* Dropdown for property list when property is selected */}
               <div className="relative">
@@ -354,23 +355,30 @@ const GeocodedMap = () => {
                   className="w-full p-3 bg-white border border-gray-300 rounded-lg shadow-sm flex justify-between items-center"
                 >
                   <span>
-                    {selectedLocation 
-                      ? `Properties within ${radius}km radius` 
-                      : 'All Properties'}
-                    {' '}({filteredProperties.length})
+                    {selectedLocation
+                      ? `Properties within ${radius}km radius`
+                      : "All Properties"}{" "}
+                    ({filteredProperties.length})
                   </span>
-                  <span className={`transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}>
+                  <span
+                    className={`transition-transform duration-200 ${
+                      isDropdownOpen ? "rotate-180" : ""
+                    }`}
+                  >
                     ▼
                   </span>
                 </button>
-                
+
                 {isDropdownOpen && (
                   <div className="absolute z-50 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg max-h-[400px] overflow-y-auto">
                     {filteredProperties.map((property) => (
-                      <div 
+                      <div
                         key={property._id}
-                        className={`p-4 border-b last:border-b-0 cursor-pointer hover:bg-gray-50 
-                          ${selectedProperty._id === property._id ? 'bg-blue-50' : ''}`}
+                        className={`p-4 border-b last:border-b-0 cursor-pointer hover:bg-gray-50 ${
+                          selectedProperty._id === property._id
+                            ? "bg-blue-50"
+                            : ""
+                        }`}
                         onClick={() => {
                           setSelectedProperty(property);
                           setIsDropdownOpen(false);
@@ -481,35 +489,63 @@ const GeocodedMap = () => {
                   </button>
                 </div>
                 <div className="space-y-4">
-                  <p className="text-lg">Location: {selectedProperty.location}</p>
+                  <p className="text-lg">
+                    Location: {selectedProperty.location}
+                  </p>
                   <p className="text-xl font-semibold">
                     Price: Rs{selectedProperty.price}
                   </p>
+                  <Image
+                  src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/d9/2b/0d/homestay-nepal.jpg?w=700&h=-1&s=1"
+                  alt="property"
+                  height={300}
+                  width={200}
+                />
+                <p className="text-lg">
+                  Location: {selectedProperty.location}
+                </p>
+                <p className="text-xl font-semibold">
+                  Price: Rs{selectedProperty.price}
+                </p>
+                <p className="text-xl font-semibold">Roommate: True</p>
+                <p className="text-xl font-semibold">
+                  No. of kitchen: {selectedProperty.kitchen}
+                </p>
+                <p className="text-xl font-semibold">
+                  No. of bedroom: {selectedProperty.bedrooms}
+                </p>
+                <p className="text-xl font-semibold">
+                  No. of bathroom: {selectedProperty.bathrooms}
+                </p>
                   {selectedLocation && (
-                    <p className="text-sm text-gray-500 mt-1">
-                      Distance: {calculateDistance(
+                    <p className="text-sm text-gray-500">
+                      Distance:{" "}
+                      {calculateDistance(
                         selectedLocation.lat,
                         selectedLocation.lon,
                         selectedProperty.latitude,
                         selectedProperty.longitude
-                      ).toFixed(2)} km
+                      ).toFixed(2)}{" "}
+                      km
                     </p>
                   )}
                 </div>
               </div>
+
+             
             </div>
           ) : (
-            /* Regular property list when no property is selected */
+            // When no property is selected:
             <div className="h-full overflow-y-auto bg-white border-2 border-gray-200 rounded-md p-4">
               <h2 className="text-xl font-bold mb-4">
-                {selectedLocation 
-                  ? `Properties within ${radius}km radius` 
-                  : 'All Properties'}
-                {' '}({filteredProperties.length})
+                {selectedLocation
+                  ? `Properties within ${radius}km radius`
+                  : "All Properties"}{" "}
+                ({filteredProperties.length})
               </h2>
               <div className="space-y-4">
                 {filteredProperties.map((property, index) => (
-                  <div 
+                  <div
                     key={property._id}
                     className="p-4 border rounded-lg cursor-pointer transition-all border-gray-200 hover:border-blue-300"
                     onClick={() => setSelectedProperty(property)}
@@ -550,12 +586,14 @@ const GeocodedMap = () => {
                     <p className="font-semibold mt-2">Rs. {property.price}</p>
                     {selectedLocation && (
                       <p className="text-sm text-gray-500 mt-1">
-                        Distance: {calculateDistance(
+                        Distance:{" "}
+                        {calculateDistance(
                           selectedLocation.lat,
                           selectedLocation.lon,
                           property.latitude,
                           property.longitude
-                        ).toFixed(2)} km
+                        ).toFixed(2)}{" "}
+                        km
                       </p>
                     )}
                   </div>
