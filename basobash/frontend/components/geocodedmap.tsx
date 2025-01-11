@@ -290,7 +290,10 @@ const GeocodedMap = () => {
             step="0.2"
             value={radius}
             onChange={(e) => setRadius(Number(e.target.value))}
-            className="w-full"
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#f63e3f]"
+            style={{
+              background: `linear-gradient(to right, #f63e3f ${(radius / 5) * 100}%, #e5e7eb ${(radius / 5) * 100}%)`,
+            }}
           />
         </div>
       </div>
