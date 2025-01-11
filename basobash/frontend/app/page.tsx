@@ -14,7 +14,7 @@ const Home = () => {
   const router = useRouter();
 
   useEffect(() => {
-    setIsClient(true); 
+    setIsClient(true);
   }, []);
 
   const checkAuthToken = async (link: string) => {
@@ -87,8 +87,8 @@ const Home = () => {
         <Image
           src={houseSearch}
           alt="House Search"
-          width={500}
-          className="select-none md:w-auto w-[70%]"
+          width={400}
+          className="select-none w-[70%] md:w-[50%]"
         />
       </div>
       <Image
