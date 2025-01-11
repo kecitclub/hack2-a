@@ -20,6 +20,16 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "marker-shadow.png",
 });
 
+const selectedPropertyIcon = new L.Icon({
+  iconUrl: "/marker-icon-violet.png",
+  iconRetinaUrl: "/marker-icon-2x-violet.png",
+  shadowUrl: "/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
+
 const GEOAPIFY_API_KEY = "1f3eec48fa604cf7b262e4d4ba1d004c";
 
 interface Location {
@@ -36,12 +46,19 @@ interface Feature {
 interface Property {
   _id: string;
   title: string;
-  price: number; 
+  description: string;
+  price: number;
   latitude: number;
   longitude: number;
   location: string;
-  latitude: number;
-  longitude: number;
+  roommates: number;
+  roommatesNo: number;
+  kitchen: number;
+  bathrooms: number;
+  bedrooms: number;
+  images: string[];
+  createdAt: string;
+  sharedBy: string[];
 }
 
 // Add this near the top of the file, after the default icon configuration
@@ -149,13 +166,14 @@ const PanAndMarker = ({ location }: { location: Location }) => {
 // Update InitialLocationSetter to pass location to parent
 const InitialLocationSetter = ({
   onLocationFound,
+  trigger
 }: {
   onLocationFound: (location: Location) => void;
+  trigger: number;
 }) => {
   const map = useMap();
 
   useEffect(() => {
-    // Only run geolocation if trigger value changes (button click)
     if (trigger > 0) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -197,14 +215,12 @@ function calculateDistance(
 }
 
 const GeocodedMap = () => {
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
-    null
-  );
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [properties, setProperties] = useState<Property[]>([]);
   const [radius, setRadius] = useState<number>(1);
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(
-    null
-  );
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [locationTrigger, setLocationTrigger] = useState(0);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -235,9 +251,9 @@ const GeocodedMap = () => {
     setSelectedLocation(location);
   };
 
-  const filteredProperties = properties.filter((property) => {
+  const filteredProperties = properties.filter(property => {
     if (!selectedLocation) return true;
-
+    
     const distance = calculateDistance(
       selectedLocation.lat,
       selectedLocation.lon,
@@ -254,7 +270,7 @@ const GeocodedMap = () => {
           <SearchBarWithAutocomplete onLocationSelected={handleLocationSelected} />
           <button
             onClick={() => setLocationTrigger(prev => prev + 1)}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            className="w-[20%] px-4 py-2 text-white bg-[#f63e3e] hover:bg-[#fc4949] rounded-full  hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             Check My Location
           </button>
@@ -360,19 +376,62 @@ const GeocodedMap = () => {
                           setIsDropdownOpen(false);
                         }}
                       >
-                        <h3 className="font-bold text-lg">{property.title}</h3>
-                        <p className="text-gray-600">{property.location}</p>
-                        <p className="font-semibold mt-2">Rs. {property.price}</p>
-                        {selectedLocation && (
-                          <p className="text-sm text-gray-500 mt-1">
-                            Distance: {calculateDistance(
-                              selectedLocation.lat,
-                              selectedLocation.lon,
-                              property.latitude,
-                              property.longitude
-                            ).toFixed(2)} km
+                        <div className="flex justify-between items-start mb-4">
+                          <div>
+                            <h2 className="text-2xl font-bold text-gray-800">
+                              {property.title}
+                              {properties.indexOf(property) < 2 && (
+                                <span className="ml-2 text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                                  ✨ Featured
+                                </span>
+                              )}
+                            </h2>
+                            <div className="flex gap-4 mt-2">
+                              {property.roommates > 0 && (
+                                <span title="Roommates Available" className="text-gray-600">
+                                  👥 {property.roommatesNo} Roommates
+                                </span>
+                              )}
+                              {property.bedrooms > 0 && (
+                                <span title="Number of Bedrooms" className="text-gray-600">
+                                  🛏️ {property.bedrooms} Beds
+                                </span>
+                              )}
+                              {property.kitchen > 0 && (
+                                <span title="Kitchen Available" className="text-gray-600">
+                                  🍳 Kitchen
+                                </span>
+                              )}
+                              {property.bathrooms > 0 && (
+                                <span title="Number of Bathrooms" className="text-gray-600">
+                                  🚿 {property.bathrooms} Bath
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => setSelectedProperty(null)}
+                            className="text-gray-500 hover:text-gray-700 transition duration-200 ease-in-out px-2 py-1 rounded"
+                          >
+                            ×
+                          </button>
+                        </div>
+                        <div className="space-y-4">
+                          <p className="text-lg">Location: {property.location}</p>
+                          <p className="text-xl font-semibold">
+                            Price: Rs{property.price}
                           </p>
-                        )}
+                          {selectedLocation && (
+                            <p className="text-sm text-gray-500 mt-1">
+                              Distance: {calculateDistance(
+                                selectedLocation.lat,
+                                selectedLocation.lon,
+                                property.latitude,
+                                property.longitude
+                              ).toFixed(2)} km
+                            </p>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -382,9 +441,38 @@ const GeocodedMap = () => {
               {/* Selected Property Details */}
               <div className="flex-1 bg-white border-2 border-gray-200 rounded-md p-4 overflow-y-auto transition duration-200 ease-in-out hover:shadow-xl">
                 <div className="flex justify-between items-start mb-4">
-                  <h2 className="text-2xl font-bold text-gray-800">
-                {selectedProperty.title}
-              </h2>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-800">
+                      {selectedProperty.title}
+                      {properties.indexOf(selectedProperty) < 2 && (
+                        <span className="ml-2 text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                          ✨ Featured
+                        </span>
+                      )}
+                    </h2>
+                    <div className="flex gap-4 mt-2">
+                      {selectedProperty.roommates > 0 && (
+                        <span title="Roommates Available" className="text-gray-600">
+                          👥 {selectedProperty.roommatesNo} Roommates
+                        </span>
+                      )}
+                      {selectedProperty.bedrooms > 0 && (
+                        <span title="Number of Bedrooms" className="text-gray-600">
+                          🛏️ {selectedProperty.bedrooms} Beds
+                        </span>
+                      )}
+                      {selectedProperty.kitchen > 0 && (
+                        <span title="Kitchen Available" className="text-gray-600">
+                          🍳 Kitchen
+                        </span>
+                      )}
+                      {selectedProperty.bathrooms > 0 && (
+                        <span title="Number of Bathrooms" className="text-gray-600">
+                          🚿 {selectedProperty.bathrooms} Bath
+                        </span>
+                      )}
+                    </div>
+                  </div>
                   <button
                     onClick={() => setSelectedProperty(null)}
                     className="text-gray-500 hover:text-gray-700 transition duration-200 ease-in-out px-2 py-1 rounded"
@@ -395,10 +483,10 @@ const GeocodedMap = () => {
                 <div className="space-y-4">
                   <p className="text-lg">Location: {selectedProperty.location}</p>
                   <p className="text-xl font-semibold">
-                Price: Rs{selectedProperty.price}
-              </p>
+                    Price: Rs{selectedProperty.price}
+                  </p>
                   {selectedLocation && (
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 mt-1">
                       Distance: {calculateDistance(
                         selectedLocation.lat,
                         selectedLocation.lon,
@@ -420,14 +508,45 @@ const GeocodedMap = () => {
                 {' '}({filteredProperties.length})
               </h2>
               <div className="space-y-4">
-                {filteredProperties.map((property) => (
+                {filteredProperties.map((property, index) => (
                   <div 
                     key={property._id}
                     className="p-4 border rounded-lg cursor-pointer transition-all border-gray-200 hover:border-blue-300"
                     onClick={() => setSelectedProperty(property)}
                   >
-                    <h3 className="font-bold text-lg">{property.title}</h3>
-                    <p className="text-gray-600">{property.location}</p>
+                    <div className="flex justify-between items-start">
+                      <h3 className="font-bold text-lg">
+                        {property.title}
+                        {index < 2 && (
+                          <span className="ml-2 text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                            ✨ Featured
+                          </span>
+                        )}
+                      </h3>
+                    </div>
+                    <div className="flex gap-3 mt-2">
+                      {property.roommates > 0 && (
+                        <span title="Roommates Available" className="text-gray-600">
+                          👥 {property.roommatesNo} Roommates
+                        </span>
+                      )}
+                      {property.bedrooms > 0 && (
+                        <span title="Number of Bedrooms" className="text-gray-600">
+                          🛏️ {property.bedrooms} Beds
+                        </span>
+                      )}
+                      {property.kitchen > 0 && (
+                        <span title="Kitchen Available" className="text-gray-600">
+                          🍳 Kitchen
+                        </span>
+                      )}
+                      {property.bathrooms > 0 && (
+                        <span title="Number of Bathrooms" className="text-gray-600">
+                          🚿 {property.bathrooms} Bath
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-gray-600 mt-2">{property.location}</p>
                     <p className="font-semibold mt-2">Rs. {property.price}</p>
                     {selectedLocation && (
                       <p className="text-sm text-gray-500 mt-1">
