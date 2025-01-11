@@ -79,9 +79,9 @@ const Login = () => {
           Don&apos;t have an account?&nbsp;
           <button
             onClick={() => router.push("/register")}
-            className="text-[#f63e3e] cursor-pointer hover:underline"
+            className="text-[#f63e3e] cursor-pointer hover:underline font-semibold"
           >
-            Registers
+            Register
           </button>
         </p>
         <button
