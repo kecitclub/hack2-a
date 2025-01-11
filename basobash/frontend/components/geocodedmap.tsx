@@ -2,6 +2,7 @@
 import React from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap, Circle } from "react-leaflet";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -29,12 +30,18 @@ interface Feature {
 interface Property {
   _id: string;
   title: string;
+  description: string;
   price: number;
+  images: string[];
   coordinates: {
     lat: number;
     lon: number;
   };
   location: string;
+  roommate: boolean;
+  bedrooms: number;
+  bathrooms: number;
+  kitchen: number;
 }
 
 // Add this near the top of the file, after the default icon configuration
@@ -116,6 +123,7 @@ const SearchBarWithAutocomplete = ({
   );
 };
 
+
 // Map Component to Pan and Update Marker
 const PanAndMarker = ({ location }: { location: Location }) => {
   const map = useMap();
@@ -177,6 +185,7 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c;
 }
 
+
 const GeocodedMap = () => {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [properties, setProperties] = useState<Property[]>([]);
@@ -223,6 +232,7 @@ const GeocodedMap = () => {
     );
     return distance <= radius;
   });
+
 
   return (
     <>
@@ -299,9 +309,13 @@ const GeocodedMap = () => {
               </button>
             </div>
             <div className="space-y-4">
+              <Image src={selectedProperty.images[0]} alt="property" height={300} width={200}></Image>
               <p className="text-lg">Location: {selectedProperty.location}</p>
               <p className="text-xl font-semibold">Price: Rs{selectedProperty.price}</p>
-              {/* Add more property details here as needed */}
+              <p className="text-xl font-semibold">Roommate: True</p>
+              <p className="text-xl font-semibold">No. of kitchen: {selectedProperty.kitchen}</p>
+              <p className="text-xl font-semibold">No. of bedroom: {selectedProperty.bedrooms}</p>
+              <p className="text-xl font-semibold">No. of bathroom: {selectedProperty.bathrooms}</p>
             </div>
           </div>
         )}
