@@ -148,8 +148,12 @@ const PanAndMarker = ({ location }: { location: Location }) => {
   ) : null;
 };
 
-// Add this new component for getting user location
-const InitialLocationSetter = () => {
+// Update InitialLocationSetter to pass location to parent
+const InitialLocationSetter = ({
+  onLocationFound,
+}: {
+  onLocationFound: (location: Location) => void;
+}) => {
   const map = useMap();
 
   useEffect(() => {
@@ -157,12 +161,18 @@ const InitialLocationSetter = () => {
       (position) => {
         const { latitude, longitude } = position.coords;
         map.flyTo([latitude, longitude], 16);
+        // Create location object and pass it up
+        onLocationFound({
+          lat: latitude,
+          lon: longitude,
+          name: "Current Location",
+        });
       },
       (error) => {
         console.error("Error getting user location:", error);
       }
     );
-  }, [map]);
+  }, [map, onLocationFound]);
 
   return null;
 };
@@ -221,6 +231,10 @@ const GeocodedMap = () => {
     setSelectedLocation(location);
   };
 
+  const handleLocationFound = (location: Location) => {
+    setSelectedLocation(location);
+  };
+
   const filteredProperties = properties.filter((property) => {
     if (!selectedLocation) return true;
 
@@ -236,19 +250,16 @@ const GeocodedMap = () => {
   return (
     <>
       <div className="flex flex-col items-center w-full py-5 gap-4">
-        <SearchBarWithAutocomplete
-          onLocationSelected={handleLocationSelected}
-        />
-
         <div className="w-full max-w-md flex flex-col items-center gap-2">
           <label htmlFor="radius" className="text-sm font-medium">
-            Search Radius: {radius} km
+            Search Radius: {radius.toFixed(1)} km
           </label>
           <input
             type="range"
             id="radius"
-            min="1"
-            max="20"
+            min="0.2"
+            max="5"
+            step="0.2"
             value={radius}
             onChange={(e) => setRadius(Number(e.target.value))}
             className="w-full"
@@ -265,11 +276,14 @@ const GeocodedMap = () => {
             zoom={13}
             style={{ height: "100%", width: "100%" }}
           >
+            <SearchBarWithAutocomplete
+              onLocationSelected={handleLocationSelected}
+            />
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            <InitialLocationSetter />
+            <InitialLocationSetter onLocationFound={handleLocationFound} />
             {selectedLocation && (
               <>
                 <PanAndMarker location={selectedLocation} />
