@@ -37,13 +37,9 @@ interface Property {
   _id: string;
   title: string;
   price: number;
-  coordinates: {
-    lat: number;
-    lon: number;
-  };
-  location: string;
   latitude: number;
   longitude: number;
+  location: string;
 }
 
 // Add this near the top of the file, after the default icon configuration
@@ -151,28 +147,31 @@ const PanAndMarker = ({ location }: { location: Location }) => {
 // Update InitialLocationSetter to pass location to parent
 const InitialLocationSetter = ({
   onLocationFound,
+  trigger,
 }: {
   onLocationFound: (location: Location) => void;
+  trigger: number;
 }) => {
   const map = useMap();
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        map.flyTo([latitude, longitude], 16);
-        // Create location object and pass it up
-        onLocationFound({
-          lat: latitude,
-          lon: longitude,
-          name: "Current Location",
-        });
-      },
-      (error) => {
-        console.error("Error getting user location:", error);
-      }
-    );
-  }, [map, onLocationFound]);
+    if (trigger > 0) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          map.flyTo([latitude, longitude], 16);
+          onLocationFound({
+            lat: latitude,
+            lon: longitude,
+            name: "Current Location",
+          });
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+        }
+      );
+    }
+  }, [map, onLocationFound, trigger]);
 
   return null;
 };
@@ -201,10 +200,12 @@ const GeocodedMap = () => {
     null
   );
   const [properties, setProperties] = useState<Property[]>([]);
-  const [radius, setRadius] = useState<number>(0.2);
+  const [radius, setRadius] = useState<number>(1);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(
     null
   );
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [locationTrigger, setLocationTrigger] = useState(0);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -249,48 +250,54 @@ const GeocodedMap = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-start items-center w-full py-5 gap-4">
-        <div className="w-full flex flex-wrap justify-center items-center gap-x-10 gap-y-2">
-          <div className="w-1/2">
-            <SearchBarWithAutocomplete
-              onLocationSelected={handleLocationSelected}
-            />
-          </div>
-          <div className="w-1/3">
-            <label
-              htmlFor="radius"
-              className="text-sm font-medium text-left w-full"
-            >
-              Search Radius: {radius.toFixed(1)} km
-            </label>
-            <input
-              type="range"
-              id="radius"
-              min="0.2"
-              max="5"
-              step="0.2"
-              value={radius}
-              onChange={(e) => setRadius(Number(e.target.value))}
-              className="w-full"
-            />
-          </div>
+      <div className="flex flex-col items-center w-full py-5 gap-4">
+        <div className="w-full flex gap-2 justify-center">
+          <SearchBarWithAutocomplete
+            onLocationSelected={handleLocationSelected}
+          />
+          <button
+            onClick={() => setLocationTrigger((prev) => prev + 1)}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Check My Location
+          </button>
+        </div>
+
+        <div className="w-full max-w-md flex flex-col items-center gap-2">
+          <label htmlFor="radius" className="text-sm font-medium">
+            Search Radius: {radius.toFixed(1)} km
+          </label>
+          <input
+            type="range"
+            id="radius"
+            min="0.2"
+            max="5"
+            step="0.2"
+            value={radius}
+            onChange={(e) => setRadius(Number(e.target.value))}
+            className="w-full"
+          />
         </div>
       </div>
 
-      <div className="h-[500px] flex flex-row gap-10">
-        <div
-          className={`z-10 h-full transition-all duration-300 ${selectedProperty ? "w-1/2" : "w-full"}`}
-        >
+      <div className="h-[500px] flex flex-row gap-4">
+        <div className="z-10 h-full w-2/3">
           <MapContainer
             center={[27.71, 85.32]}
             zoom={13}
             style={{ height: "100%", width: "100%" }}
           >
+            <SearchBarWithAutocomplete
+              onLocationSelected={handleLocationSelected}
+            />
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            <InitialLocationSetter onLocationFound={handleLocationFound} />
+            <InitialLocationSetter
+              onLocationFound={handleLocationFound}
+              trigger={locationTrigger}
+            />
             {selectedLocation && (
               <>
                 <PanAndMarker location={selectedLocation} />
@@ -324,28 +331,140 @@ const GeocodedMap = () => {
           </MapContainer>
         </div>
 
-        {selectedProperty && (
-          <div className="w-1/2 h-full p-4 bg-white border-2 shadow-md border-gray-200 rounded-md overflow-y-auto transition duration-200 ease-in-out hover:shadow-xl">
-            <div className="flex justify-between items-start mb-4">
-              <h2 className="text-2xl font-bold text-gray-800">
-                {selectedProperty.title}
+        <div className="w-1/3 h-full">
+          {selectedProperty ? (
+            <div className="h-full flex flex-col gap-4">
+              {/* Dropdown for property list when property is selected */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="w-full p-3 bg-white border border-gray-300 rounded-lg shadow-sm flex justify-between items-center"
+                >
+                  <span>
+                    {selectedLocation
+                      ? `Properties within ${radius}km radius`
+                      : "All Properties"}{" "}
+                    ({filteredProperties.length})
+                  </span>
+                  <span
+                    className={`transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`}
+                  >
+                    ▼
+                  </span>
+                </button>
+
+                {isDropdownOpen && (
+                  <div className="absolute z-50 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg max-h-[400px] overflow-y-auto">
+                    {filteredProperties.map((property) => (
+                      <div
+                        key={property._id}
+                        className={`p-4 border-b last:border-b-0 cursor-pointer hover:bg-gray-50 
+                          ${selectedProperty._id === property._id ? "bg-blue-50" : ""}`}
+                        onClick={() => {
+                          setSelectedProperty(property);
+                          setIsDropdownOpen(false);
+                        }}
+                      >
+                        <h3 className="font-bold text-lg">{property.title}</h3>
+                        <p className="text-gray-600">{property.location}</p>
+                        <p className="font-semibold mt-2">
+                          Rs. {property.price}
+                        </p>
+                        {selectedLocation && (
+                          <p className="text-sm text-gray-500 mt-1">
+                            Distance:{" "}
+                            {calculateDistance(
+                              selectedLocation.lat,
+                              selectedLocation.lon,
+                              property.latitude,
+                              property.longitude
+                            ).toFixed(2)}{" "}
+                            km
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Selected Property Details */}
+              <div className="flex-1 bg-white border-2 border-gray-200 rounded-md p-4 overflow-y-auto transition duration-200 ease-in-out hover:shadow-xl">
+                <div className="flex justify-between items-start mb-4">
+                  <h2 className="text-2xl font-bold text-gray-800">
+                    {selectedProperty.title}
+                  </h2>
+                  <button
+                    onClick={() => setSelectedProperty(null)}
+                    className="text-gray-500 hover:text-gray-700 transition duration-200 ease-in-out px-2 py-1 rounded"
+                  >
+                    ×
+                  </button>
+                </div>
+                <div className="space-y-4">
+                  <p className="text-lg">
+                    Location: {selectedProperty.location}
+                  </p>
+                  <p className="text-xl font-semibold">
+                    Price: Rs{selectedProperty.price}
+                  </p>
+                  {selectedLocation && (
+                    <p className="text-sm text-gray-500">
+                      Distance:{" "}
+                      {calculateDistance(
+                        selectedLocation.lat,
+                        selectedLocation.lon,
+                        selectedProperty.latitude,
+                        selectedProperty.longitude
+                      ).toFixed(2)}{" "}
+                      km
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* Regular property list when no property is selected */
+            <div className="h-full overflow-y-auto bg-white border-2 border-gray-200 rounded-md p-4">
+              <h2 className="text-xl font-bold mb-4">
+                {selectedLocation
+                  ? `Properties within ${radius}km radius`
+                  : "All Properties"}{" "}
+                ({filteredProperties.length})
               </h2>
-              <button
-                onClick={() => setSelectedProperty(null)}
-                className="text-gray-500 hover:text-gray-700 transition duration-200 ease-in-out"
-              >
-                ×
-              </button>
+              <div className="space-y-4">
+                {filteredProperties.map((property) => (
+                  <div
+                    key={property._id}
+                    className="p-4 border rounded-lg cursor-pointer transition-all border-gray-200 hover:border-blue-300"
+                    onClick={() => setSelectedProperty(property)}
+                  >
+                    <h3 className="font-bold text-lg">{property.title}</h3>
+                    <p className="text-gray-600">{property.location}</p>
+                    <p className="font-semibold mt-2">Rs. {property.price}</p>
+                    {selectedLocation && (
+                      <p className="text-sm text-gray-500 mt-1">
+                        Distance:{" "}
+                        {calculateDistance(
+                          selectedLocation.lat,
+                          selectedLocation.lon,
+                          property.latitude,
+                          property.longitude
+                        ).toFixed(2)}{" "}
+                        km
+                      </p>
+                    )}
+                  </div>
+                ))}
+                {filteredProperties.length === 0 && (
+                  <p className="text-gray-500 text-center py-4">
+                    No properties found in this area
+                  </p>
+                )}
+              </div>
             </div>
-            <div className="space-y-4">
-              <p className="text-lg">Location: {selectedProperty.location}</p>
-              <p className="text-xl font-semibold">
-                Price: Rs{selectedProperty.price}
-              </p>
-              {/* Add more property details here as needed */}
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );
