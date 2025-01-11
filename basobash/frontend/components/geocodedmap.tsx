@@ -495,28 +495,25 @@ const GeocodedMap = () => {
                   <p className="text-xl font-semibold">
                     Price: Rs{selectedProperty.price}
                   </p>
-                  <Image
-                  src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/d9/2b/0d/homestay-nepal.jpg?w=700&h=-1&s=1"
-                  alt="property"
-                  height={300}
-                  width={200}
-                />
-                <p className="text-lg">
-                  Location: {selectedProperty.location}
-                </p>
-                <p className="text-xl font-semibold">
-                  Price: Rs{selectedProperty.price}
-                </p>
-                <p className="text-xl font-semibold">Roommate: True</p>
-                <p className="text-xl font-semibold">
-                  No. of kitchen: {selectedProperty.kitchen}
-                </p>
-                <p className="text-xl font-semibold">
-                  No. of bedroom: {selectedProperty.bedrooms}
-                </p>
-                <p className="text-xl font-semibold">
-                  No. of bathroom: {selectedProperty.bathrooms}
-                </p>
+                  <div className="flex justify-center w-full my-4">
+                    <Image
+                      src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/d9/2b/0d/homestay-nepal.jpg?w=700&h=-1&s=1"
+                      alt="property"
+                      height={300}
+                      width={200}
+                      className="object-cover rounded-lg"
+                    />
+                  </div>
+                  <p className="text-xl font-semibold">Roommate: True</p>
+                  <p className="text-xl font-semibold">
+                    No. of kitchen: {selectedProperty.kitchen}
+                  </p>
+                  <p className="text-xl font-semibold">
+                    No. of bedroom: {selectedProperty.bedrooms}
+                  </p>
+                  <p className="text-xl font-semibold">
+                    No. of bathroom: {selectedProperty.bathrooms}
+                  </p>
                   {selectedLocation && (
                     <p className="text-sm text-gray-500">
                       Distance:{" "}
