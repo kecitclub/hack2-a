@@ -12,6 +12,15 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { CiLocationOn } from "react-icons/ci";
+import { IoIosPricetags } from "react-icons/io";
+import { MdKitchen, MdPeopleAlt } from "react-icons/md";
+import { IoIosCheckbox } from "react-icons/io";
+import { FaBed } from "react-icons/fa";
+import { TbToiletPaper, TbToolsKitchen3 } from "react-icons/tb";
+import { LuToilet } from "react-icons/lu";
+
+
 
 // Fix Leaflet default icon paths
 L.Icon.Default.imagePath = "/";
@@ -402,6 +411,7 @@ const GeocodedMap = () => {
                   <h2 className="text-2xl font-bold text-gray-800">
                     {selectedProperty.title}
                   </h2>
+                  <hr></hr>
                   <button
                     onClick={() => setSelectedProperty(null)}
                     className="text-gray-500 hover:text-gray-700 transition duration-200 ease-in-out px-2 py-1 rounded"
@@ -410,35 +420,22 @@ const GeocodedMap = () => {
                   </button>
                 </div>
                 <div className="space-y-4">
-                  <p className="text-lg">
-                    Location: {selectedProperty.location}
+                <div className="flex items-center space-x-4">
+                  <p className="font-semibold flex items-center space-x-4">
+                    <IoIosPricetags />&nbsp; Rs{selectedProperty.price}
                   </p>
-                  <p className="text-xl font-semibold">
-                    Price: Rs{selectedProperty.price}
+                   <p className="flex items-center space-x-4">
+                    <CiLocationOn /> &nbsp;{selectedProperty.location}
                   </p>
+                </div>
+
                   <Image
                   src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/d9/2b/0d/homestay-nepal.jpg?w=700&h=-1&s=1"
                   alt="property"
-                  height={300}
-                  width={200}
+                  height={450}
+                  width={350}
                 />
-                <p className="text-lg">
-                  Location: {selectedProperty.location}
-                </p>
-                <p className="text-xl font-semibold">
-                  Price: Rs{selectedProperty.price}
-                </p>
-                <p className="text-xl font-semibold">Roommate: True</p>
-                <p className="text-xl font-semibold">
-                  No. of kitchen: {selectedProperty.kitchen}
-                </p>
-                <p className="text-xl font-semibold">
-                  No. of bedroom: {selectedProperty.bedrooms}
-                </p>
-                <p className="text-xl font-semibold">
-                  No. of bathroom: {selectedProperty.bathrooms}
-                </p>
-                  {selectedLocation && (
+                {selectedLocation && (
                     <p className="text-sm text-gray-500">
                       Distance:{" "}
                       {calculateDistance(
@@ -450,7 +447,36 @@ const GeocodedMap = () => {
                       km
                     </p>
                   )}
+                <div className="flex items-center space-x-4">
+                <p className="text-xl font-semibold flex items-center space-x-4 flex items-center space-x-4"><MdPeopleAlt /> &nbsp;1 |</p>&nbsp;
+                <p className="text-xl font-semibold flex items-center space-x-4">
+                  <TbToolsKitchen3 />&nbsp; {selectedProperty.kitchen} |
+                </p>&nbsp;
+                <p className="text-xl font-semibold flex items-center space-x-4">
+                  <FaBed /> &nbsp;{selectedProperty.bedrooms} |
+                </p>&nbsp;
+                <p className="text-xl font-semibold flex items-center space-x-4">
+                  <LuToilet />&nbsp; {selectedProperty.bathrooms} |
+                </p>&nbsp;
                 </div>
+                <br></br>
+                  <div>
+                  <hr></hr>
+                  <br></br>
+                  <h1 className="text-2xl"><b>Roommate Information</b></h1>
+                  <br></br>
+                  <Image src="/profile.jpg" alt="profilePic" height={400} width={600}></Image>
+                  <br></br>
+                  <p className="text-left"><b>Name: </b>Satish</p>
+                  <br></br>
+                  <p className="text-left"><b>Description:</b> College student studying at St.Xavier's College. Age: 20</p>
+                  <br></br>
+                  <p className="text-left"><b>Sex:</b> Male</p>
+                  </div>
+                
+              
+                </div>
+              
               </div>
 
              
