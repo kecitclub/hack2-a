@@ -201,7 +201,7 @@ const GeocodedMap = () => {
     null
   );
   const [properties, setProperties] = useState<Property[]>([]);
-  const [radius, setRadius] = useState<number>(1);
+  const [radius, setRadius] = useState<number>(0.2);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(
     null
   );
@@ -249,21 +249,31 @@ const GeocodedMap = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center w-full py-5 gap-4">
-        <div className="w-full max-w-md flex flex-col items-center gap-2">
-          <label htmlFor="radius" className="text-sm font-medium">
-            Search Radius: {radius.toFixed(1)} km
-          </label>
-          <input
-            type="range"
-            id="radius"
-            min="0.2"
-            max="5"
-            step="0.2"
-            value={radius}
-            onChange={(e) => setRadius(Number(e.target.value))}
-            className="w-full"
-          />
+      <div className="flex flex-col justify-start items-center w-full py-5 gap-4">
+        <div className="w-full flex flex-wrap justify-center items-center gap-x-10 gap-y-2">
+          <div className="w-1/2">
+            <SearchBarWithAutocomplete
+              onLocationSelected={handleLocationSelected}
+            />
+          </div>
+          <div className="w-1/3">
+            <label
+              htmlFor="radius"
+              className="text-sm font-medium text-left w-full"
+            >
+              Search Radius: {radius.toFixed(1)} km
+            </label>
+            <input
+              type="range"
+              id="radius"
+              min="0.2"
+              max="5"
+              step="0.2"
+              value={radius}
+              onChange={(e) => setRadius(Number(e.target.value))}
+              className="w-full"
+            />
+          </div>
         </div>
       </div>
 
@@ -276,9 +286,6 @@ const GeocodedMap = () => {
             zoom={13}
             style={{ height: "100%", width: "100%" }}
           >
-            <SearchBarWithAutocomplete
-              onLocationSelected={handleLocationSelected}
-            />
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
