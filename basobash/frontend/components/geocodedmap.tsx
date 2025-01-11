@@ -509,6 +509,7 @@ const GeocodedMap = () => {
                     <CiLocationOn /> &nbsp;{selectedProperty.location}
                   </p>
                 </div>
+                
 
                   <Image
                   src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/d9/2b/0d/homestay-nepal.jpg?w=700&h=-1&s=1"
@@ -548,6 +549,7 @@ const GeocodedMap = () => {
           <p><strong>Name:</strong> Satish</p>
           <p><strong>Description:</strong> College student studying at St. Xavier's College. Age: 20</p>
           <p><strong>Sex:</strong> Male</p>
+          <p><strong>Phone:</strong> 9808599166</p>
         </div>
       </div>
 
